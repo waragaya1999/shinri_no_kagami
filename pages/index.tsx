@@ -1,12 +1,15 @@
 import React, { useEffect, useRef, useState } from "react";
 import * as faceapi from "face-api.js";
 import "tailwindcss/tailwind.css";
+import { signIn, signOut, useSession } from 'next-auth/client'
 
 export default function Home() {
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const messageRef = useRef<HTMLParagraphElement | null>(null);
   const tableContainerRef = useRef<HTMLDivElement | null>(null);
+  // Googleログイン
+  const [ session, loading ] = useSession()
 
   const [happinessMessage, setHappinessMessage] = useState<string | null>(null);
 
@@ -144,12 +147,22 @@ export default function Home() {
     detectFace();
   }, []);
 
-  return (
+  return <>
     <div>
       <video ref={videoRef} autoPlay playsInline muted style={{ display: "block" }} />
       <canvas ref={canvasRef} className={""} />
       <div ref={tableContainerRef} style={{ position: 'absolute', top: '0', left: '0' }}></div>
       {happinessMessage && <p ref={messageRef}>{happinessMessage}</p>}
     </div>
-  );
+
+    {!session && <>
+      Not signed in <br/>
+      <button onClick={signIn}>Sign in</button>
+    </>}
+    {session && <>
+      Signed in as {session.user.email} <br/>
+      <button onClick={signOut}>Sign out</button>
+    </>}
+  </>
+    
 }
