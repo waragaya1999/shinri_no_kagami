@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import * as faceapi from "face-api.js";
 import "tailwindcss/tailwind.css";
-import { signIn, signOut, useSession } from 'next-auth/client'
+import { signIn, signOut, useSession } from 'next-auth/react'
 
 export default function Home() {
   const videoRef = useRef<HTMLVideoElement | null>(null);
@@ -9,7 +9,7 @@ export default function Home() {
   const messageRef = useRef<HTMLParagraphElement | null>(null);
   const tableContainerRef = useRef<HTMLDivElement | null>(null);
   // Googleログイン
-  const [ session, loading ] = useSession()
+  const session = useSession()
 
   const [happinessMessage, setHappinessMessage] = useState<string | null>(null);
 
@@ -160,7 +160,7 @@ export default function Home() {
       <button onClick={signIn}>Sign in</button>
     </>}
     {session && <>
-      Signed in as {session.user.email} <br/>
+      Signed in as {session.data?.user?.email} <br/>
       <button onClick={signOut}>Sign out</button>
     </>}
   </>
