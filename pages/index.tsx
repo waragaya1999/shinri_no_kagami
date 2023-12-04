@@ -155,14 +155,18 @@ export default function Home() {
       {happinessMessage && <p ref={messageRef}>{happinessMessage}</p>}
     </div>
 
-    {!session && <>
-      Not signed in <br/>
-      <button onClick={signIn}>Sign in</button>
-    </>}
-    {session && <>
-      Signed in as {session.data?.user?.email} <br/>
-      <button onClick={signOut}>Sign out</button>
-    </>}
-  </>
+    {session.data ? (
+      <>
+        Signed in as {session.data?.user?.email} <br />
+        <button onClick={() => signOut()}>Sign out</button>
+      </>
+    ) : (
+      <>
+        Not signed in <br />
+        <button onClick={() => signIn()}>Sign in</button>
+      </>
+    )}
     
+  </>
+  
 }
