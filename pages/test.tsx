@@ -4,31 +4,38 @@ import * as faceapi from "face-api.js";
 
 // カメラ画像をキャプチャし、写真と顔の表情情報を親コンポーネントに渡すコンポーネント
 interface PhotoCaptureProps {
-  onCapture: (photo: string, expressions: faceapi.FaceDetection[]) => void;
+  onCapture: (photo: string, expressions: faceapi.WithFaceExpressions<faceapi.WithFaceDescriptor<faceapi.WithFaceLandmarks<{ detection: faceapi.FaceDetection; }, faceapi.FaceLandmarks68>>>[]) => void;
 }
 
 const PhotoCapture: React.FC<PhotoCaptureProps> = ({ onCapture }) => {
   // カメラ画像をキャプチャして顔の情報を検出する関数
   const capturePhoto = async () => {
+  // ビデオ要素を取得
     const video = document.getElementById("video") as HTMLVideoElement;
 
     if (video) {
+      // キャンバスを作成し、ビデオの幅と高さを設定
       const canvas = document.createElement("canvas");
       canvas.width = video.videoWidth;
       canvas.height = video.videoHeight;
+      // キャンバスにビデオの画像を描画
       const ctx = canvas.getContext("2d");
       ctx?.drawImage(video, 0, 0, canvas.width, canvas.height);
+      // キャンバスの画像をデータURLとして取得
       const dataUrl = canvas.toDataURL("image/png");
 
+      // 新しい画像要素を作成し、データURLをソースとして設定
       const photo = new Image();
       photo.src = dataUrl;
       photo.onload = async () => {
+        // 画像が読み込まれたら、顔の検出を行う
         const detections = await faceapi
           .detectAllFaces(photo, new faceapi.TinyFaceDetectorOptions())
           .withFaceLandmarks()
           .withFaceDescriptors()
           .withFaceExpressions();
 
+        // 顔の検出結果を親コンポーネントに渡す
         onCapture(dataUrl, detections);
       };
     }
@@ -43,8 +50,9 @@ export default function Home() {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const tableContainerRef = useRef<HTMLDivElement | null>(null);
 
+  // 撮影した写真と検出した表情を保持するステート
   const [capturedPhoto, setCapturedPhoto] = useState<string | null>(null);
-  const [capturedExpressions, setCapturedExpressions] = useState<faceapi.FaceDetection[]>([]);
+  const [capturedExpressions, setCapturedExpressions] = useState<faceapi.WithFaceExpressions<faceapi.WithFaceDescriptor<faceapi.WithFaceLandmarks<{ detection: faceapi.FaceDetection; }, faceapi.FaceLandmarks68>>>[]>([]);
 
   // 表情の閾値を設定するオブジェクト
   interface EmotionThresholds {
@@ -108,8 +116,11 @@ export default function Home() {
           .withFaceDescriptors()
           .withFaceExpressions();
 
+        // 検出結果をリサイズしてキャンバスに合わせる
         const resizedDetections = faceapi.resizeResults(detections, displaySize);
+        // キャンバスをクリア
         canvas?.getContext("2d")?.clearRect(0, 0, canvas.width, canvas.height);
+        // キャンバスに検出結果を描画
         faceapi.draw.drawDetections(canvas, resizedDetections);
 
         // 感情の閾値（※要調整）
@@ -124,8 +135,11 @@ export default function Home() {
           tableContainerRef.current.innerHTML = '';
         }
 
+        // 検出結果ごとに処理
         resizedDetections.forEach((detection) => {
           const expressions = detection.expressions;
+
+          // デバッグ用：表情をコンソールに出力
           console.log(expressions);
 
           let message = null;
@@ -138,9 +152,12 @@ export default function Home() {
             message = "怒りな状態です";
           }
 
+          // キャンバスとテーブルコンテナが存在する場合キャンバスのコンテキストを取得
           if (canvas && tableContainerRef.current) {
             const ctx = canvas.getContext("2d");
+            // コンテキストと検出結果が存在する場合
             if (ctx && detection.detection) {
+              // メッセージを描画する位置を計算
               const x = detection.detection.box.x + detection.detection.box.width / 2;
               const y = detection.detection.box.y - 10;
 
@@ -155,7 +172,7 @@ export default function Home() {
             }
           }
         });
-        //読み取り感覚(1000=1秒)
+        //読み取り間隔(1000=1秒)
       }, 1000);
     }
 
@@ -167,7 +184,7 @@ export default function Home() {
   function createExpressionsTable(expressions: faceapi.FaceExpressions) {
     const table = document.createElement("table");
     const tbody = document.createElement("tbody");
-
+    // 表示する感情のリスト
     const relevantExpressions = ['neutral', 'happy', 'sad', 'angry', 'fearful', 'disgusted', 'surprised'];
 
     for (const key of relevantExpressions) {
@@ -175,6 +192,7 @@ export default function Home() {
       const cell1 = document.createElement("td");
       const cell2 = document.createElement("td");
 
+      // セルに感情の名前と値を設定
       cell1.textContent = key;
       cell2.textContent = (expressions[key as keyof faceapi.FaceExpressions] as number).toFixed(4);
 
