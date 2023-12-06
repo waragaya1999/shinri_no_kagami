@@ -158,6 +158,10 @@ export default function Home() {
     {session.data ? (
       <>
         Signed in as {session.data?.user?.email} <br />
+        <p>name: {session.data?.user?.name}</p>
+        <p>image:
+          {session.data?.user?.image?(<img src={session.data?.user?.image}/>):(<img src={""}/>)}
+          </p>
         <button onClick={() => signOut()}>Sign out</button>
       </>
     ) : (
