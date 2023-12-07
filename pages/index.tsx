@@ -178,10 +178,10 @@ export default function Home() {
 
   return <>
     <div>
-      {/* <video ref={videoRef} autoPlay playsInline muted style={{ display: "block" }} />
+      <video ref={videoRef} autoPlay playsInline muted style={{ display: "block" }} />
       <canvas ref={canvasRef} className={""} />
       <div ref={tableContainerRef} style={{ position: 'absolute', top: '0', left: '0' }}></div>
-      {happinessMessage && <p ref={messageRef}>{happinessMessage}</p>} */}
+      {happinessMessage && <p ref={messageRef}>{happinessMessage}</p>}
     </div>
 
     {session.data ? (

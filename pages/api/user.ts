@@ -22,9 +22,16 @@ export default async function handler(
   
 
   if (req.method === 'POST') {
-    const docRef = db.collection(COLLECTION_NAME).doc();
-    const insertData = { name, email, image };
-    docRef.set(insertData);
+    try {
+      const querySnapshot = await db.collection(COLLECTION_NAME).where('email', '==', email).get();
+      if (querySnapshot.empty) {
+        const docRef = db.collection(COLLECTION_NAME).doc();
+        const insertData = { name, email, image };
+        await docRef.set(insertData);
+      }
+    } catch (error) {
+      console.error("Error in Firestore operation:", error);
+    }
   }
   res.status(200);
 }
