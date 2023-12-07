@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import * as faceapi from "face-api.js";
 import "tailwindcss/tailwind.css";
 import { signIn, signOut, useSession } from 'next-auth/react'
+import axios from "axios";
 
 export default function Home() {
   const videoRef = useRef<HTMLVideoElement | null>(null);
@@ -146,28 +147,56 @@ export default function Home() {
 
     detectFace();
   }, []);
+  
+  type userDto = {
+    name: string,
+    email: string,
+    image: string,
+  };
+  const [user, setUser] = useState<userDto>({
+    name: session.data?.user?.name || "",
+    email: session.data?.user?.email || "",
+    image: session.data?.user?.image || "",
+  });
+  useEffect(() => {
+    setUser({
+      name: session.data?.user?.name || "",
+      email: session.data?.user?.email || "",
+      image: session.data?.user?.image || "",
+    })
+    if (user.name !== "") {
+      insertUser();
+    }
+  }, [session]);
+  const insertUser = async () => {
+    await axios.post('/api/user', {
+      name: user.name || "",
+      email: user.email || "",
+      image: user.image || "",
+    });
+  };
 
   return <>
     <div>
-      <video ref={videoRef} autoPlay playsInline muted style={{ display: "block" }} />
+      {/* <video ref={videoRef} autoPlay playsInline muted style={{ display: "block" }} />
       <canvas ref={canvasRef} className={""} />
       <div ref={tableContainerRef} style={{ position: 'absolute', top: '0', left: '0' }}></div>
-      {happinessMessage && <p ref={messageRef}>{happinessMessage}</p>}
+      {happinessMessage && <p ref={messageRef}>{happinessMessage}</p>} */}
     </div>
 
     {session.data ? (
       <>
-        Signed in as {session.data?.user?.email} <br />
-        <p>name: {session.data?.user?.name}</p>
+        Signed in as {user.email} <br />
+        <p>name: {user.name}</p>
         <p>image:
-          {session.data?.user?.image?(<img src={session.data?.user?.image}/>):(<img src={""}/>)}
+          <img src={user.image} />
           </p>
         <button onClick={() => signOut()}>Sign out</button>
       </>
     ) : (
       <>
         Not signed in <br />
-        <button onClick={() => signIn()}>Sign in</button>
+          <button onClick={() => {signIn()}}>Sign in</button>
       </>
     )}
     
