@@ -216,6 +216,7 @@ export default function Home() {
     return table;
   }
   
+  // usres set
   type userDto = {
     name: string,
     email: string,
@@ -238,6 +239,42 @@ export default function Home() {
   }, [session]);
   const insertUser = async () => {
     await axios.post('/api/user', {
+      name: user.name || "",
+      email: user.email || "",
+      image: user.image || "",
+    });
+  };
+  
+  // expressionsWhether set
+  type expressionsWhetherDto = {
+    email: string,
+    faceImage: string,
+    expressions: JSON,
+    // angry: number,
+    // disgusted: number,
+    // fearful: number,
+    // happy: number,
+    // neutral: number,
+    // sad: number,
+    // surprised: number,
+    location: string,
+    whether: string,
+    temp: string,
+    humidity: string,
+    pressure: string
+  };
+  // const [expWhe, setExpWhe] = useState<expressionsWhetherDto>({
+  //   email: session.data?.user?.email || "",
+  //   faceImage: capturedPhoto || "",
+  //   // expressions: expressionsfirestore || "", 
+
+  // });
+  // useEffect(() => {
+  //   setExpWhe({
+  //   })
+  // })
+  const insertExpWhe = async () => {
+    await axios.post('/api/expressionsWhether', {
       name: user.name || "",
       email: user.email || "",
       image: user.image || "",
@@ -297,6 +334,10 @@ export default function Home() {
       <p>muniCd: {muniCd}</p>
       <p>prefecture: {prefecture}</p>
       <p>天気: {weather?.weather[0].main}</p>
+      <p>説明: {weather?.weather[0].description}</p>
+      <p>temp: {weather?.main.temp}</p>
+      <p>humidity: {weather?.main.humidity}</p>
+      <p>pressure: {weather?.main.pressure}</p>
     </>
   </>
 }
