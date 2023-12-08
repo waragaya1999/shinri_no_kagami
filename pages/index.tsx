@@ -3,6 +3,7 @@ import * as faceapi from "face-api.js";
 import "tailwindcss/tailwind.css";
 import { signIn, signOut, useSession } from 'next-auth/react'
 import axios from "axios";
+import { useOtenkiApi } from "@/hooks/useOtenkiApi";
 
 // カメラ画像をキャプチャし、写真と顔の表情情報を親コンポーネントに渡すコンポーネント
 interface PhotoCaptureProps {
@@ -43,7 +44,7 @@ const PhotoCapture: React.FC<PhotoCaptureProps> = ({ onCapture }) => {
     }
   };
 
-  return <button onClick={capturePhoto}>写真保存</button>;
+  return <button onClick={capturePhoto}>写真保存ボタン</button>;
 };
 
 // ホーム画面のコンポーネント
@@ -53,6 +54,11 @@ export default function Home() {
   const tableContainerRef = useRef<HTMLDivElement | null>(null);
   // Googleログイン
   const session = useSession()
+  // お天気
+  const { getOtenkiApi, muniCd, prefecture, latlon, weather } = useOtenkiApi();
+  const handleClick = () => {
+    getOtenkiApi()
+  }
 
   // 撮影した写真と検出した表情を保持するステート
   const [capturedPhoto, setCapturedPhoto] = useState<string | null>(null);
@@ -273,15 +279,24 @@ export default function Home() {
         <p>image:
           <img src={user.image} />
           </p>
-        <button onClick={() => signOut()}>Sign out</button>
+        <button onClick={() => signOut()}>Sign outボタン</button>
       </>
     ) : (
       <>
         Not signed in <br />
-          <button onClick={() => {signIn()}}>Sign in</button>
+          <button onClick={() => {signIn()}}>Sign inボタン</button>
       </>
     )}
-    
+
+    <>
+      <br />
+      <button onClick={() => handleClick()}>お天気ボタン</button>
+      <h1>Otenki test</h1>
+      <p>lat: {latlon.lat}</p>
+      <p>lon: {latlon.lon}</p>
+      <p>muniCd: {muniCd}</p>
+      <p>prefecture: {prefecture}</p>
+      <p>天気: {weather?.weather[0].main}</p>
+    </>
   </>
-  
 }
