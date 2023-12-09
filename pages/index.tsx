@@ -38,13 +38,46 @@ const PhotoCapture: React.FC<PhotoCaptureProps> = ({ onCapture }) => {
           .withFaceDescriptors()
           .withFaceExpressions();
 
+        // テスト（写真保存の値）
+        console.log(detections);
+
+        if (detections.length > 0) {
+          const firstDetection = detections[0];
+          console.log(`Expression: ${JSON.stringify(firstDetection.expressions)}`);
+        }
         // 顔の検出結果を親コンポーネントに渡す
         onCapture(dataUrl, detections);
       };
     }
   };
 
-  return <button onClick={capturePhoto}>写真保存ボタン</button>;
+  // お天気
+  const { getOtenkiApi, muniCd, prefecture, latlon, weather } = useOtenkiApi();
+  const handleClick = () => {
+    getOtenkiApi()
+  }
+  // 写真保存・天気取得・firestore保存をまとめた関数
+  const expressionsWhether = () => {
+    capturePhoto();
+    handleClick();
+  };
+
+  return <>
+    <button onClick={expressionsWhether}>写真保存ボタン</button>
+    <>
+      <br />
+      <h1>Otenki test</h1>
+      <p>lat: {latlon.lat}</p>
+      <p>lon: {latlon.lon}</p>
+      <p>muniCd: {muniCd}</p>
+      <p>prefecture: {prefecture}</p>
+      <p>天気: {weather?.weather[0].main}</p>
+      <p>説明: {weather?.weather[0].description}</p>
+      <p>temp: {weather?.main.temp}</p>
+      <p>humidity: {weather?.main.humidity}</p>
+      <p>pressure: {weather?.main.pressure}</p>
+    </>
+  </>
 };
 
 // ホーム画面のコンポーネント
@@ -54,11 +87,9 @@ export default function Home() {
   const tableContainerRef = useRef<HTMLDivElement | null>(null);
   // Googleログイン
   const session = useSession()
-  // お天気
-  const { getOtenkiApi, muniCd, prefecture, latlon, weather } = useOtenkiApi();
-  const handleClick = () => {
-    getOtenkiApi()
-  }
+  // 表情
+  const [detections, setDetections] = useState(null);
+  
 
   // 撮影した写真と検出した表情を保持するステート
   const [capturedPhoto, setCapturedPhoto] = useState<string | null>(null);
@@ -249,37 +280,41 @@ export default function Home() {
   type expressionsWhetherDto = {
     email: string,
     faceImage: string,
-    expressions: JSON,
-    // angry: number,
-    // disgusted: number,
-    // fearful: number,
-    // happy: number,
-    // neutral: number,
-    // sad: number,
-    // surprised: number,
+    expressions: {
+      angry: number,
+      disgusted: number,
+      fearful: number,
+      happy: number,
+      neutral: number,
+      sad: number,
+      surprised: number,
+    },
     location: string,
     whether: string,
     temp: string,
     humidity: string,
     pressure: string
   };
-  // const [expWhe, setExpWhe] = useState<expressionsWhetherDto>({
-  //   email: session.data?.user?.email || "",
-  //   faceImage: capturedPhoto || "",
-  //   // expressions: expressionsfirestore || "", 
 
-  // });
+  const firstExpression = capturedExpressions[0];
+  console.log(firstExpression);
+  const [expWhe, setExpWhe] = useState<expressionsWhetherDto>({
+    email: session.data?.user?.email || "",
+    faceImage: capturedPhoto || "",
+    expressions: JSON.parse(firstExpression.expressions) || "", 
+    
+  });
   // useEffect(() => {
   //   setExpWhe({
   //   })
   // })
   const insertExpWhe = async () => {
     await axios.post('/api/expressionsWhether', {
-      name: user.name || "",
-      email: user.email || "",
-      image: user.image || "",
+      // email: expWhe.email || "",
     });
   };
+
+  // 写真保存・天気取得・firestore保存をまとめた関数
 
   return <>
     <div>
@@ -325,19 +360,6 @@ export default function Home() {
       </>
     )}
 
-    <>
-      <br />
-      <button onClick={() => handleClick()}>お天気ボタン</button>
-      <h1>Otenki test</h1>
-      <p>lat: {latlon.lat}</p>
-      <p>lon: {latlon.lon}</p>
-      <p>muniCd: {muniCd}</p>
-      <p>prefecture: {prefecture}</p>
-      <p>天気: {weather?.weather[0].main}</p>
-      <p>説明: {weather?.weather[0].description}</p>
-      <p>temp: {weather?.main.temp}</p>
-      <p>humidity: {weather?.main.humidity}</p>
-      <p>pressure: {weather?.main.pressure}</p>
-    </>
+    
   </>
 }
