@@ -174,11 +174,19 @@ export const useOtenkiApi = () => {
     getLocation();
   };
 
+  const getOtenkiInfo = () => {
+    return {
+      prefecture: prefecture,
+      weather: weather
+    }
+  }
+
   return {
     getOtenkiApi,
     muniCd,
     prefecture,
     latlon,
     weather,
+    getOtenkiInfo
   };
 };

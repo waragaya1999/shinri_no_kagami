@@ -4,6 +4,8 @@ import "tailwindcss/tailwind.css";
 import { signIn, signOut, useSession } from 'next-auth/react'
 import axios from "axios";
 import { useOtenkiApi } from "@/hooks/useOtenkiApi";
+import EmotionChart from "./EmotionChart";
+import useSendData from "@/hooks/useSendData";
 
 // カメラ画像をキャプチャし、写真と顔の表情情報を親コンポーネントに渡すコンポーネント
 interface PhotoCaptureProps {
@@ -53,15 +55,14 @@ const PhotoCapture: React.FC<PhotoCaptureProps> = ({ onCapture }) => {
 
   // お天気
   const { getOtenkiApi, muniCd, prefecture, latlon, weather } = useOtenkiApi();
-  const handleClick = () => {
-    getOtenkiApi()
-  }
   // 写真保存・天気取得・firestore保存をまとめた関数
   const expressionsWhether = () => {
     capturePhoto();
-    handleClick();
   };
 
+  useEffect(() => {
+    getOtenkiApi()
+  })
   return <>
     <button onClick={expressionsWhether}>写真保存ボタン</button>
     <>
@@ -277,6 +278,9 @@ export default function Home() {
   };
   
   // expressionsWhether set
+  const firstExpression = capturedExpressions[0];
+  const { getOtenkiApi, muniCd, prefecture, latlon, weather ,getOtenkiInfo} = useOtenkiApi();
+
   type expressionsWhetherDto = {
     email: string,
     faceImage: string,
@@ -291,23 +295,58 @@ export default function Home() {
     },
     location: string,
     whether: string,
-    temp: string,
-    humidity: string,
-    pressure: string
+    temp: number,
+    humidity: number,
+    pressure: number
   };
 
-  const firstExpression = capturedExpressions[0];
+  console.log(firstExpression?.expressions?.angry)
+
   console.log(firstExpression);
+  console.log(prefecture);
   const [expWhe, setExpWhe] = useState<expressionsWhetherDto>({
     email: session.data?.user?.email || "",
     faceImage: capturedPhoto || "",
-    expressions: JSON.parse(firstExpression.expressions) || "", 
-    
+    expressions: {
+      angry: firstExpression?.expressions.angry || 0,
+      disgusted: firstExpression?.expressions.disgusted || 0,
+      fearful: firstExpression?.expressions.fearful || 0,
+      happy: firstExpression?.expressions.happy || 0,
+      neutral: firstExpression?.expressions.neutral || 0,
+      sad: firstExpression?.expressions.sad || 0,
+      surprised: firstExpression?.expressions.surprised || 0
+    },
+    location: "",
+    whether: weather?.weather[0].main || "",
+    temp: weather?.main.temp || 0,
+    humidity: weather?.main.humidity || 0,
+    pressure: weather?.main.pressure || 0
   });
-  // useEffect(() => {
-  //   setExpWhe({
-  //   })
-  // })
+
+  useEffect(() => {
+    const data = getOtenkiInfo();
+    console.log(data);
+    
+    setExpWhe({
+      email: session.data?.user?.email || "",
+      faceImage: capturedPhoto || "",
+      expressions: {
+        angry: firstExpression?.expressions.angry || 0,
+        disgusted: firstExpression?.expressions.disgusted || 0,
+        fearful: firstExpression?.expressions.fearful || 0,
+        happy: firstExpression?.expressions.happy || 0,
+        neutral: firstExpression?.expressions.neutral || 0,
+        sad: firstExpression?.expressions.sad || 0,
+        surprised: firstExpression?.expressions.surprised || 0
+      },
+      location: prefecture || "",
+      whether: weather?.weather[0].main || "",
+      temp: weather?.main.temp || 0,
+      humidity: weather?.main.humidity || 0,
+      pressure: weather?.main.pressure || 0
+    })
+  }, [firstExpression])
+  console.log(expWhe);
   const insertExpWhe = async () => {
     await axios.post('/api/expressionsWhether', {
       // email: expWhe.email || "",
@@ -342,6 +381,7 @@ export default function Home() {
         setCapturedPhoto(photo);
         setCapturedExpressions(expressions);
       }} />
+      <div id="emotion-chart-container"></div>
     </div>
 
     {session.data ? (
