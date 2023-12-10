@@ -72,11 +72,11 @@ const PhotoCapture: React.FC<PhotoCaptureProps> = ({ onCapture }) => {
       <p>lon: {latlon.lon}</p>
       <p>muniCd: {muniCd}</p>
       <p>prefecture: {prefecture}</p>
-      <p>天気: {weather?.weather[0].main}</p>
+      {/* <p>天気: {weather?.weather[0].main}</p>
       <p>説明: {weather?.weather[0].description}</p>
       <p>temp: {weather?.main.temp}</p>
       <p>humidity: {weather?.main.humidity}</p>
-      <p>pressure: {weather?.main.pressure}</p>
+      <p>pressure: {weather?.main.pressure}</p> */}
     </>
   </>
 };
