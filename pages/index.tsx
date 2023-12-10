@@ -177,9 +177,6 @@ export default function Home() {
                                 ctx.fillStyle = "white"
                                 // ctx.fillText(message, x, y);
                             }
-
-                            const table = createExpressionsTable(expressions)
-                            tableContainerRef.current.appendChild(table)
                         }
                     }
                 })
@@ -190,42 +187,6 @@ export default function Home() {
         // 画面がロードされたときに顔の検出を開始する
         detectFace()
     }, [])
-
-    // FaceExpressionsの各項目を表示するテーブルを作成する関数
-    function createExpressionsTable(expressions: faceapi.FaceExpressions) {
-        const table = document.createElement("table")
-        const tbody = document.createElement("tbody")
-        // 表示する感情のリスト
-        const relevantExpressions = [
-            "neutral",
-            "happy",
-            "sad",
-            "angry",
-            "fearful",
-            "disgusted",
-            "surprised",
-        ]
-
-        for (const key of relevantExpressions) {
-            const row = document.createElement("tr")
-            const cell1 = document.createElement("td")
-            const cell2 = document.createElement("td")
-
-            // セルに感情の名前と値を設定
-            cell1.textContent = key
-            cell2.textContent = (
-                expressions[key as keyof faceapi.FaceExpressions] as number
-            ).toFixed(4)
-
-            row.appendChild(cell1)
-            row.appendChild(cell2)
-
-            tbody.appendChild(row)
-        }
-
-        table.appendChild(tbody)
-        return table
-    }
 
     type userDto = {
         name: string
