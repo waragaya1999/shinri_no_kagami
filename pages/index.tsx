@@ -52,27 +52,14 @@ import { useSetUpCamera } from "@/hooks/useSetUpCamera"
 
 // ホーム画面のコンポーネント
 export default function Home() {
-    const { setupCamera } = useSetUpCamera()
-    const { windowSize, handleResize } = useIndexState()
-    const videoRef = useRef<HTMLVideoElement | null>(null)
+    const { videoRef, setupCamera } = useSetUpCamera()
+    const { expressions, windowSize, handleExpressions, handleResize } =
+        useIndexState()
+
     const canvasRef = useRef<HTMLCanvasElement | null>(null)
     const tableContainerRef = useRef<HTMLDivElement | null>(null)
     // Googleログイン
     const session = useSession()
-    // お天気
-    const { getOtenkiApi, muniCd, prefecture, latlon, weather } = useOtenkiApi()
-    const handleClick = () => {
-        getOtenkiApi()
-    }
-    const [expressions, setExpressions] = useState<ExpressionsDto>({
-        neutral: 0,
-        happy: 0,
-        sad: 0,
-        angry: 0,
-        fearful: 0,
-        disgusted: 0,
-        surprised: 0,
-    })
 
     // face-api.jsのモデルをロードする
     async function loadFaceAPIModels() {
@@ -83,7 +70,7 @@ export default function Home() {
     }
 
     // 撮影した写真と検出した表情を保持するステート
-    const [capturedPhoto, setCapturedPhoto] = useState<string | null>(null)
+    const [capturedPhoto, setCapturedPhoto] = useState<string | null>()
     const [capturedExpressions, setCapturedExpressions] = useState<
         CapturedExpression[]
     >([])
@@ -150,17 +137,10 @@ export default function Home() {
                     angry: 0.004,
                 }
 
-                // テーブルを追加する前に既存のテーブルがあれば削除（要調整）
-                if (tableContainerRef.current) {
-                    tableContainerRef.current.innerHTML = ""
-                }
-
                 // 検出結果ごとに処理
                 resizedDetections.forEach((detection) => {
                     const expressions = detection.expressions
-
-                    // デバッグ用：表情をコンソールに出力
-                    console.log(expressions)
+                    handleExpressions(expressions)
 
                     let message = null
 
@@ -339,17 +319,6 @@ export default function Home() {
                     </button>
                 </>
             )}
-
-            <>
-                <br />
-                <button onClick={() => handleClick()}>お天気ボタン</button>
-                <h1>Otenki test</h1>
-                <p>lat: {latlon.lat}</p>
-                <p>lon: {latlon.lon}</p>
-                <p>muniCd: {muniCd}</p>
-                <p>prefecture: {prefecture}</p>
-                <p>天気: {weather?.weather[0].main}</p>
-            </>
         </>
     )
 }
