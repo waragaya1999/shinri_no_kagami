@@ -9,6 +9,7 @@ import { CapturedExpression } from "@/types/CaputuredExpressionsDto"
 import { useSetUpCamera } from "@/hooks/useSetUpCamera"
 import Header from "@/components/Header"
 import Footer from "@/components/Footer"
+import useLogin from "./login"
 
 // const PhotoCapture: React.FC<PhotoCaptureDto> = ({ onCapture }) => {
 //     // カメラ画像をキャプチャして顔の情報を検出する関数
@@ -55,11 +56,10 @@ export default function Home() {
     const { videoRef, setupCamera } = useSetUpCamera()
     const { expressions, handleExpressions } = useIndexState()
     const { getOtenkiApi, muniCd, prefecture, latlon, weather } = useOtenkiApi()
+    const { session, userCollection, handleUserCollection } = useLogin()
 
     const canvasRef = useRef<HTMLCanvasElement | null>(null)
     const tableContainerRef = useRef<HTMLDivElement | null>(null)
-    // Googleログイン
-    const session = useSession()
 
     // face-api.jsのモデルをロードする
     async function loadFaceAPIModels() {
@@ -190,34 +190,6 @@ export default function Home() {
         // 画面がロードされたときに顔の検出を開始する
         detectFace()
     }, [])
-
-    type userDto = {
-        name: string
-        email: string
-        image: string
-    }
-    const [user, setUser] = useState<userDto>({
-        name: session.data?.user?.name || "",
-        email: session.data?.user?.email || "",
-        image: session.data?.user?.image || "",
-    })
-    useEffect(() => {
-        setUser({
-            name: session.data?.user?.name || "",
-            email: session.data?.user?.email || "",
-            image: session.data?.user?.image || "",
-        })
-        if (user.name !== "") {
-            insertUser()
-        }
-    }, [session])
-    const insertUser = async () => {
-        await axios.post("/api/user", {
-            name: user.name || "",
-            email: user.email || "",
-            image: user.image || "",
-        })
-    }
 
     return (
         <>
@@ -383,6 +355,27 @@ export default function Home() {
                 {/*    }}*/}
                 {/*/>*/}
             </div>
+
+            {userCollection ? (
+                <>
+                    Signed in as {userCollection.email} <br />
+                    <p>name: {userCollection.name}</p>
+                    image:
+                    <img src={userCollection.image} alt={""} />
+                    <button onClick={() => signOut()}>Sign outボタン</button>
+                </>
+            ) : (
+                <>
+                    Not signed in <br />
+                    <button
+                        onClick={() => {
+                            signIn()
+                        }}
+                    >
+                        Sign inボタン
+                    </button>
+                </>
+            )}
             <Footer />
         </>
     )
