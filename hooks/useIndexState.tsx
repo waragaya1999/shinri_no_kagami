@@ -3,6 +3,7 @@ import { ExpressionsDto } from "@/types/ExpressionsDto"
 
 export const useIndexState = () => {
     const [windowSize, setWindowSize] = useState({ width: 0, height: 0 })
+
     const [expressions, setExpressions] = useState<ExpressionsDto>({
         neutral: 0,
         happy: 0,

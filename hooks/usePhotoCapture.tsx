@@ -1,11 +1,20 @@
-import { PhotoCaptureDto } from "@/types/PhotoCaputureDto"
-import * as faceapi from "face-api.js"
+import { CapturedExpression } from "@/types/CaputuredExpressionsDto"
 
-export const PhotoCapture: React.FC<PhotoCaptureDto> = ({ onCapture }) => {
+import * as faceapi from "face-api.js"
+import { useState } from "react"
+
+export const usePhotoCapture = () => {
+    // 撮影した写真と検出した表情を保持するステート
+    const [capturedPhoto, setCapturedPhoto] = useState<string | null>()
+    const [capturedExpressions, setCapturedExpressions] = useState<
+        CapturedExpression[]
+    >([])
+
     // カメラ画像をキャプチャして顔の情報を検出する関数
-    const capturePhoto = async () => {
+    const capturePhoto = () => {
         // ビデオ要素を取得
         const video = document.getElementById("video") as HTMLVideoElement
+        console.log("capturePhoto: ", capturedPhoto)
 
         if (video) {
             // キャンバスを作成し、ビデオの幅と高さを設定
@@ -33,10 +42,10 @@ export const PhotoCapture: React.FC<PhotoCaptureDto> = ({ onCapture }) => {
                     .withFaceExpressions()
 
                 // 顔の検出結果を親コンポーネントに渡す
-                onCapture(dataUrl, detections)
+                setCapturedPhoto(dataUrl)
+                setCapturedExpressions(detections)
             }
         }
     }
-
-    return <button onClick={capturePhoto}>写真保存ボタン</button>
+    return { capturePhoto, capturedPhoto, capturedExpressions }
 }

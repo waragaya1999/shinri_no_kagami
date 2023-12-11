@@ -10,7 +10,7 @@ type FaceLandmarksWithDetection = faceapi.WithFaceLandmarks<
 type FaceDescriptorWithLandmarks =
     faceapi.WithFaceDescriptor<FaceLandmarksWithDetection>
 
-type FaceExpressionWithDescriptor =
+export type FaceExpressionWithDescriptor =
     faceapi.WithFaceExpressions<FaceDescriptorWithLandmarks>
 
 export type PhotoCaptureDto = {
