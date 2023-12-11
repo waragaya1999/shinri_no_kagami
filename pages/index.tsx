@@ -9,6 +9,7 @@ import { PhotoCaptureDto } from "@/types/PhotoCaputureDto"
 import { ExpressionsDto } from "@/types/ExpressionsDto"
 import { CapturedExpression } from "@/types/CaputuredExpressionsDto"
 import { useSetUpCamera } from "@/hooks/useSetUpCamera"
+import useLogin from "./login"
 
 // const PhotoCapture: React.FC<PhotoCaptureDto> = ({ onCapture }) => {
 //     // カメラ画像をキャプチャして顔の情報を検出する関数
@@ -55,11 +56,10 @@ export default function Home() {
     const { videoRef, setupCamera } = useSetUpCamera()
     const { expressions, windowSize, handleExpressions, handleResize } =
         useIndexState()
+    const { session, userCollection, handleUserCollection } = useLogin()
 
     const canvasRef = useRef<HTMLCanvasElement | null>(null)
     const tableContainerRef = useRef<HTMLDivElement | null>(null)
-    // Googleログイン
-    const session = useSession()
 
     // face-api.jsのモデルをロードする
     async function loadFaceAPIModels() {
@@ -81,6 +81,10 @@ export default function Home() {
         sad: number
         angry: number
     }
+
+    useEffect(() => {
+        handleUserCollection()
+    }, [session])
 
     useEffect(() => {
         handleResize()
@@ -188,34 +192,6 @@ export default function Home() {
         detectFace()
     }, [])
 
-    type userDto = {
-        name: string
-        email: string
-        image: string
-    }
-    const [user, setUser] = useState<userDto>({
-        name: session.data?.user?.name || "",
-        email: session.data?.user?.email || "",
-        image: session.data?.user?.image || "",
-    })
-    useEffect(() => {
-        setUser({
-            name: session.data?.user?.name || "",
-            email: session.data?.user?.email || "",
-            image: session.data?.user?.image || "",
-        })
-        if (user.name !== "") {
-            insertUser()
-        }
-    }, [session])
-    const insertUser = async () => {
-        await axios.post("/api/user", {
-            name: user.name || "",
-            email: user.email || "",
-            image: user.image || "",
-        })
-    }
-
     return (
         <>
             <div>
@@ -258,14 +234,12 @@ export default function Home() {
                 {/*/>*/}
             </div>
 
-            {session.data ? (
+            {userCollection ? (
                 <>
-                    Signed in as {user.email} <br />
-                    <p>name: {user.name}</p>
-                    <p>
-                        image:
-                        <img src={user.image} alt={""} />
-                    </p>
+                    Signed in as {userCollection.email} <br />
+                    <p>name: {userCollection.name}</p>
+                    image:
+                    <img src={userCollection.image} alt={""} />
                     <button onClick={() => signOut()}>Sign outボタン</button>
                 </>
             ) : (
