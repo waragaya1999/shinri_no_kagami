@@ -9,6 +9,8 @@ import { PhotoCaptureDto } from "@/types/PhotoCaputureDto"
 import { ExpressionsDto } from "@/types/ExpressionsDto"
 import { CapturedExpression } from "@/types/CaputuredExpressionsDto"
 import { useSetUpCamera } from "@/hooks/useSetUpCamera"
+import Header from "@/components/Header"
+import Footer from "@/components/Footer"
 
 // const PhotoCapture: React.FC<PhotoCaptureDto> = ({ onCapture }) => {
 //     // カメラ画像をキャプチャして顔の情報を検出する関数
@@ -53,8 +55,7 @@ import { useSetUpCamera } from "@/hooks/useSetUpCamera"
 // ホーム画面のコンポーネント
 export default function Home() {
     const { videoRef, setupCamera } = useSetUpCamera()
-    const { expressions, windowSize, handleExpressions, handleResize } =
-        useIndexState()
+    const { expressions, handleExpressions } = useIndexState()
 
     const canvasRef = useRef<HTMLCanvasElement | null>(null)
     const tableContainerRef = useRef<HTMLDivElement | null>(null)
@@ -83,7 +84,6 @@ export default function Home() {
     }
 
     useEffect(() => {
-        handleResize()
         // 顔を検出して表情を表示する
         async function detectFace() {
             await loadFaceAPIModels()
@@ -104,7 +104,7 @@ export default function Home() {
 
             const displaySize = {
                 width: video?.videoWidth || 640,
-                height: video?.videoHeight || windowSize.height * 0.8,
+                height: video?.videoHeight || 480,
             }
             faceapi.matchDimensions(canvas, displaySize)
 
@@ -181,7 +181,7 @@ export default function Home() {
                     }
                 })
                 //読み取り間隔(1000=1秒)
-            }, 10000)
+            }, 1000)
         }
 
         // 画面がロードされたときに顔の検出を開始する
@@ -218,37 +218,160 @@ export default function Home() {
 
     return (
         <>
+            <Header />
             <div>
-                {/* カメラ映像を表示するビデオ要素 */}
                 <video
                     id="video"
                     ref={videoRef}
                     autoPlay
                     playsInline
                     muted
-                    className={"w-[94%] m-auto"}
+                    className={"w-[94%] rounded-3xl m-auto"}
                 />
-                {/* 顔を検出した結果を描画するキャンバス要素 */}
-                {/*<canvas ref={canvasRef} className={""}/>*/}
-                {/* 表情情報を表示するコンテナ */}
                 <div
-                    ref={tableContainerRef}
-                    style={{ position: "absolute", top: "0", left: "0" }}
-                ></div>
-                {/* キャプチャした写真と表情情報を表示する */}
-                {capturedPhoto && (
-                    <div>
-                        <img src={capturedPhoto} alt="Captured" />
-                        <div>
-                            {capturedExpressions.map((expression, index) => (
-                                <div key={index}>
-                                    Expression {index + 1}:{" "}
-                                    {JSON.stringify(expression.expressions)}
-                                </div>
-                            ))}
+                    className={
+                        "absolute w-[86%] h-32 bg-blue-50 top-1/2 left-1/2 translate-x-[-50%] translate-y-[160%] rounded-2xl"
+                    }
+                >
+                    <div
+                        className={
+                            "flex justify-between items-end w-full h-[70%] bg-gray-300 rounded-t-2xl"
+                        }
+                    >
+                        <div
+                            className={
+                                "flex justify-center items-end w-1/6 h-[90%]"
+                            }
+                        >
+                            <div
+                                className={"w-1/3 bg-gray-400 rounded-t"}
+                                style={{
+                                    height: `${expressions.neutral * 100}%`,
+                                }}
+                            ></div>
+                        </div>
+                        <div
+                            className={
+                                "flex justify-center items-end w-1/6 h-[90%]"
+                            }
+                        >
+                            <div
+                                className={"w-1/3 bg-gray-400 rounded-t"}
+                                style={{
+                                    height: `${expressions.happy * 100}%`,
+                                }}
+                            ></div>
+                        </div>
+                        <div
+                            className={
+                                "flex justify-center items-end w-1/6 h-[90%]"
+                            }
+                        >
+                            <div
+                                className={"w-1/3 bg-gray-400 rounded-t"}
+                                style={{
+                                    height: `${expressions.sad * 100}%`,
+                                }}
+                            ></div>
+                        </div>
+                        <div
+                            className={
+                                "flex justify-center items-end w-1/6 h-[90%]"
+                            }
+                        >
+                            <div
+                                className={"w-1/3 bg-gray-400 rounded-t"}
+                                style={{
+                                    height: `${expressions.angry * 100}%`,
+                                }}
+                            ></div>
+                        </div>
+                        <div
+                            className={
+                                "flex justify-center items-end w-1/6 h-[90%]"
+                            }
+                        >
+                            <div
+                                className={"w-1/3 bg-gray-400 rounded-t"}
+                                style={{
+                                    height: `${expressions.fearful * 100}%`,
+                                }}
+                            ></div>
+                        </div>
+                        <div
+                            className={
+                                "flex justify-center items-end w-1/6 h-[90%]"
+                            }
+                        >
+                            <div
+                                className={"w-1/3 bg-gray-400 rounded-t"}
+                                style={{
+                                    height: `${expressions.surprised * 100}%`,
+                                }}
+                            ></div>
                         </div>
                     </div>
-                )}
+                    <div className={"w-full h-[30%]"}>
+                        <ul className={"flex w-full h-full"}>
+                            <li
+                                className={
+                                    "flex w-1/6 items-center justify-center text-2xl"
+                                }
+                            >
+                                😐
+                            </li>
+                            <li
+                                className={
+                                    "flex w-1/6 items-center justify-center text-2xl"
+                                }
+                            >
+                                😆
+                            </li>
+                            <li
+                                className={
+                                    "flex w-1/6 items-center justify-center text-2xl"
+                                }
+                            >
+                                😭
+                            </li>
+                            <li
+                                className={
+                                    "flex w-1/6 items-center justify-center text-2xl"
+                                }
+                            >
+                                😠
+                            </li>
+                            <li
+                                className={
+                                    "flex w-1/6 items-center justify-center text-2xl"
+                                }
+                            >
+                                🤪
+                            </li>
+                            <li
+                                className={
+                                    "flex w-1/6 items-center justify-center text-2xl"
+                                }
+                            >
+                                😲
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                {/* キャプチャした写真と表情情報を表示する */}
+                {/*{capturedPhoto && (*/}
+                {/*    <div>*/}
+                {/*        <img src={capturedPhoto} alt="Captured" />*/}
+                {/*        <div>*/}
+                {/*            {capturedExpressions.map((expression, index) => (*/}
+                {/*                <div key={index}>*/}
+                {/*                    Expression {index + 1}:{" "}*/}
+                {/*                    {JSON.stringify(expression.expressions)}*/}
+                {/*                </div>*/}
+                {/*            ))}*/}
+                {/*        </div>*/}
+                {/*    </div>*/}
+                {/*)}*/}
                 {/* 写真をキャプチャするボタンコンポーネント */}
                 {/*<PhotoCapture*/}
                 {/*    onCapture={(photo, expressions) => {*/}
@@ -257,29 +380,7 @@ export default function Home() {
                 {/*    }}*/}
                 {/*/>*/}
             </div>
-
-            {session.data ? (
-                <>
-                    Signed in as {user.email} <br />
-                    <p>name: {user.name}</p>
-                    <p>
-                        image:
-                        <img src={user.image} alt={""} />
-                    </p>
-                    <button onClick={() => signOut()}>Sign outボタン</button>
-                </>
-            ) : (
-                <>
-                    Not signed in <br />
-                    <button
-                        onClick={() => {
-                            signIn()
-                        }}
-                    >
-                        Sign inボタン
-                    </button>
-                </>
-            )}
+            <Footer />
         </>
     )
 }
