@@ -5,8 +5,6 @@ import { signIn, signOut, useSession } from "next-auth/react"
 import axios from "axios"
 import { useOtenkiApi } from "@/hooks/useOtenkiApi"
 import { useIndexState } from "@/hooks/useIndexState"
-import { PhotoCaptureDto } from "@/types/PhotoCaputureDto"
-import { ExpressionsDto } from "@/types/ExpressionsDto"
 import { CapturedExpression } from "@/types/CaputuredExpressionsDto"
 import { useSetUpCamera } from "@/hooks/useSetUpCamera"
 import Header from "@/components/Header"
@@ -56,6 +54,7 @@ import Footer from "@/components/Footer"
 export default function Home() {
     const { videoRef, setupCamera } = useSetUpCamera()
     const { expressions, handleExpressions } = useIndexState()
+    const { getOtenkiApi, muniCd, prefecture, latlon, weather } = useOtenkiApi()
 
     const canvasRef = useRef<HTMLCanvasElement | null>(null)
     const tableContainerRef = useRef<HTMLDivElement | null>(null)
@@ -82,6 +81,10 @@ export default function Home() {
         sad: number
         angry: number
     }
+
+    useEffect(() => {
+        getOtenkiApi()
+    }, [])
 
     useEffect(() => {
         // 顔を検出して表情を表示する
