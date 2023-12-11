@@ -37,3 +37,7 @@ next-env.d.ts
 
 # firebase
 shinri-no-firebase.json
+
+.idea/**/workspace.xml
+.idea/**/statistics.xml
+.idea/**/tasks.xml
