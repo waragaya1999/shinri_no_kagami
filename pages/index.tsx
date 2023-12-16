@@ -7,7 +7,6 @@ import { CapturedExpression } from "@/types/CaputuredExpressionsDto"
 import { useSetUpCamera } from "@/hooks/useSetUpCamera"
 import Header from "@/components/Header"
 import Footer from "@/components/Footer"
-import useLogin from "@/hooks/useLogin"
 
 export default function Home() {
     const { videoRef, setupCamera } = useSetUpCamera()
