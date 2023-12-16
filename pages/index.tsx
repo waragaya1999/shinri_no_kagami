@@ -1,56 +1,14 @@
 import React, { useEffect, useRef, useState } from "react"
 import * as faceapi from "face-api.js"
 import "tailwindcss/tailwind.css"
-import { signIn, signOut, useSession } from "next-auth/react"
-import axios from "axios"
 import { useOtenkiApi } from "@/hooks/useOtenkiApi"
 import { useIndexState } from "@/hooks/useIndexState"
 import { CapturedExpression } from "@/types/CaputuredExpressionsDto"
 import { useSetUpCamera } from "@/hooks/useSetUpCamera"
 import Header from "@/components/Header"
 import Footer from "@/components/Footer"
+import useLogin from "@/hooks/useLogin"
 
-// const PhotoCapture: React.FC<PhotoCaptureDto> = ({ onCapture }) => {
-//     // カメラ画像をキャプチャして顔の情報を検出する関数
-//     const capturePhoto = async () => {
-//         // ビデオ要素を取得
-//         const video = document.getElementById("video") as HTMLVideoElement
-//
-//         if (video) {
-//             // キャンバスを作成し、ビデオの幅と高さを設定
-//             const canvas = document.createElement("canvas")
-//             canvas.width = video.videoWidth
-//             canvas.height = video.videoHeight
-//             // キャンバスにビデオの画像を描画
-//             const ctx = canvas.getContext("2d")
-//             ctx?.drawImage(video, 0, 0, canvas.width, canvas.height)
-//             // キャンバスの画像をデータURLとして取得
-//             const dataUrl = canvas.toDataURL("image/png")
-//
-//             // 新しい画像要素を作成し、データURLをソースとして設定
-//             const photo = new Image()
-//             photo.src = dataUrl
-//             photo.onload = async () => {
-//                 // 画像が読み込まれたら、顔の検出を行う
-//                 const detections = await faceapi
-//                     .detectAllFaces(
-//                         photo,
-//                         new faceapi.TinyFaceDetectorOptions(),
-//                     )
-//                     .withFaceLandmarks()
-//                     .withFaceDescriptors()
-//                     .withFaceExpressions()
-//
-//                 // 顔の検出結果を親コンポーネントに渡す
-//                 onCapture(dataUrl, detections)
-//             }
-//         }
-//     }
-//
-//     return <button onClick={capturePhoto}>写真保存ボタン</button>
-// }
-
-// ホーム画面のコンポーネント
 export default function Home() {
     const { videoRef, setupCamera } = useSetUpCamera()
     const { expressions, handleExpressions } = useIndexState()
@@ -58,8 +16,6 @@ export default function Home() {
 
     const canvasRef = useRef<HTMLCanvasElement | null>(null)
     const tableContainerRef = useRef<HTMLDivElement | null>(null)
-    // Googleログイン
-    const session = useSession()
 
     // face-api.jsのモデルをロードする
     async function loadFaceAPIModels() {
@@ -191,38 +147,10 @@ export default function Home() {
         detectFace()
     }, [])
 
-    type userDto = {
-        name: string
-        email: string
-        image: string
-    }
-    const [user, setUser] = useState<userDto>({
-        name: session.data?.user?.name || "",
-        email: session.data?.user?.email || "",
-        image: session.data?.user?.image || "",
-    })
-    useEffect(() => {
-        setUser({
-            name: session.data?.user?.name || "",
-            email: session.data?.user?.email || "",
-            image: session.data?.user?.image || "",
-        })
-        if (user.name !== "") {
-            insertUser()
-        }
-    }, [session])
-    const insertUser = async () => {
-        await axios.post("/api/user", {
-            name: user.name || "",
-            email: user.email || "",
-            image: user.image || "",
-        })
-    }
-
     return (
         <>
             <Header />
-            <div>
+            <div className={"z-10"}>
                 <video
                     id="video"
                     ref={videoRef}
@@ -360,6 +288,18 @@ export default function Home() {
                             </li>
                         </ul>
                     </div>
+                </div>
+                <div className={"fixed z-100 top-[5rem] left-[3rem]"}>
+                    {weather?.weather[0].main}
+                    <br />
+                    {prefecture}
+                    <br />
+                    {weather?.main.temp &&
+                        `${(weather?.main.temp - 273.15).toFixed(1)}℃`}
+                    <br />
+                    {weather?.main.humidity}%
+                    <br />
+                    {weather?.main.pressure}hPa
                 </div>
                 {/* キャプチャした写真と表情情報を表示する */}
                 {/*{capturedPhoto && (*/}
