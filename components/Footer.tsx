@@ -9,15 +9,16 @@ export default function Footer() {
     }, [session])
 
     return (
-        <footer className="fixed bottom-0 w-full h-32 bg-gray-300">
+        <footer>
             {/* <div className="flex w-[94%] h-[75%] bg-black m-auto mt-[3%]"></div> */}
             {userCollection ? (
                 <>
+                    <button onClick={() => signOut()}>Sign outボタン</button>
+                    <br />
                     Signed in as {userCollection.email} <br />
                     <p>name: {userCollection.name}</p>
                     image:
                     <img src={userCollection.image} alt={userCollection.name} />
-                    <button onClick={() => signOut()}>Sign outボタン</button>
                 </>
             ) : (
                 <>
