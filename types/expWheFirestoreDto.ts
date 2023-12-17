@@ -1,4 +1,4 @@
-export type expWheFirestoreDto = {
+export type ExpWheFirestoreDto = {
     faceImage: string
     expressions: {
         angry: number
