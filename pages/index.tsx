@@ -7,13 +7,14 @@ import { CapturedExpression } from "@/types/CaputuredExpressionsDto"
 import { useSetUpCamera } from "@/hooks/useSetUpCamera"
 import Header from "@/components/Header"
 import Footer from "@/components/Footer"
+import { usePhotoCapture } from "@/hooks/usePhotoCapture"
 
 export default function Home() {
     const { videoRef, setupCamera } = useSetUpCamera()
     const { expressions, handleExpressions } = useIndexState()
     const { getOtenkiApi, muniCd, prefecture, latlon, weather } = useOtenkiApi()
+    const { capturedPhoto, capturedExpressions } = usePhotoCapture()
 
-    const canvasRef = useRef<HTMLCanvasElement | null>(null)
     const tableContainerRef = useRef<HTMLDivElement | null>(null)
 
     // face-api.jsのモデルをロードする
@@ -23,12 +24,6 @@ export default function Home() {
         await faceapi.nets.faceRecognitionNet.load("/models")
         await faceapi.nets.faceExpressionNet.load("/models")
     }
-
-    // 撮影した写真と検出した表情を保持するステート
-    const [capturedPhoto, setCapturedPhoto] = useState<string | null>()
-    const [capturedExpressions, setCapturedExpressions] = useState<
-        CapturedExpression[]
-    >([])
 
     // 表情の閾値を設定するオブジェクト
     interface EmotionThresholds {
@@ -149,6 +144,7 @@ export default function Home() {
     return (
         <>
             <Header />
+
             <div className={"z-10"}>
                 <video
                     id="video"
