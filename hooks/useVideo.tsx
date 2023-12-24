@@ -1,16 +1,37 @@
 import { useRef, useState } from "react"
 import * as faceapi from "face-api.js"
-import { useIndexState } from "./useIndexState"
+import { ExpressionsDto } from "@/types/ExpressionsDto"
 
 // 表情の閾値を設定するオブジェクト
-interface EmotionThresholds {
+type EmotionThresholds = {
     happy: number
     sad: number
     angry: number
 }
 
 export const useVideo = () => {
+    const [expressions, setExpressions] = useState<ExpressionsDto>({
+        neutral: 0,
+        happy: 0,
+        sad: 0,
+        angry: 0,
+        fearful: 0,
+        disgusted: 0,
+        surprised: 0,
+    })
     const videoRef = useRef<HTMLVideoElement | null>(null)
+
+    const handleExpressions = (expressions: ExpressionsDto) => {
+        setExpressions({
+            neutral: Number(expressions.neutral.toFixed(2)),
+            happy: Number(expressions.happy.toFixed(2)),
+            sad: Number(expressions.sad.toFixed(2)),
+            angry: Number(expressions.angry.toFixed(2)),
+            fearful: Number(expressions.fearful.toFixed(2)),
+            disgusted: Number(expressions.disgusted.toFixed(2)),
+            surprised: Number(expressions.surprised.toFixed(2)),
+        })
+    }
 
     const setupCamera = async () => {
         const video = videoRef.current
@@ -47,7 +68,7 @@ export const useVideo = () => {
             return null
         }
     }
-    // face-api.jsのモデルをロードする
+
     async function loadFaceAPIModels() {
         await faceapi.nets.tinyFaceDetector.load("/models")
         await faceapi.nets.faceLandmark68Net.load("/models")
@@ -55,8 +76,6 @@ export const useVideo = () => {
         await faceapi.nets.faceExpressionNet.load("/models")
     }
 
-    // 顔を検出して表情を表示する
-    const { handleExpressions } = useIndexState()
     const detectFace = async () => {
         await loadFaceAPIModels()
         const video = await setupCamera()
@@ -136,5 +155,5 @@ export const useVideo = () => {
         }, 1000)
     }
 
-    return { videoRef, setupCamera, detectFace } as const
+    return { expressions, videoRef, detectFace, setupCamera } as const
 }

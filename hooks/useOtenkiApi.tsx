@@ -1,4 +1,5 @@
 import { useState } from "react"
+import { WeatherInfoDto } from "@/types/WeatherInfoDto"
 
 // 位置情報
 type LatLon = {
@@ -63,55 +64,11 @@ const MUNI_LIST: MuniList = {
     },
 }
 
-// お天気API
-type WeatherInfo = {
-    coord: {
-        lon: number
-        lat: number
-    }
-    weather: Array<{
-        id: number
-        main: string
-        description: string
-        icon: string
-    }>
-    base: string
-    main: {
-        temp: number
-        feels_like: number
-        temp_min: number
-        temp_max: number
-        pressure: number
-        humidity: number
-    }
-    visibility: number
-    wind: {
-        speed: number
-        deg: number
-        gust: number
-    }
-    clouds: {
-        all: number
-    }
-    dt: number
-    sys: {
-        type: number
-        id: number
-        country: string
-        sunrise: number
-        sunset: number
-    }
-    timezone: number
-    id: number
-    name: string
-    cod: number
-}
-
 export const useOtenkiApi = () => {
     const [muniCd, setMuniCd] = useState("")
     const [prefecture, setPrefecture] = useState("")
     const [latlon, setLatlon] = useState<LatLon>({ lat: 0, lon: 0 })
-    const [weather, setWeather] = useState<WeatherInfo>()
+    const [weather, setWeather] = useState<WeatherInfoDto>()
 
     const successCallback = async (position: GeolocationPosition) => {
         setLatlon({
@@ -149,7 +106,7 @@ export const useOtenkiApi = () => {
                         const response = await fetch(
                             `https://api.openweathermap.org/data/2.5/weather?q=${pf}&appid=8b088bfd51d569c1bcd2db2dea01a24d&lang=ja`,
                         )
-                        const data: WeatherInfo = await response.json()
+                        const data: WeatherInfoDto = await response.json()
                         setWeather(data)
                     } catch {
                         console.log("error")
