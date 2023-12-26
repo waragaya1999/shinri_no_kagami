@@ -16,8 +16,20 @@ export default function Home() {
         detectFace()
     }, [])
 
+    console.log(weather?.weather[0].icon)
+
     return (
         <>
+            {!videoRef ||
+                (!weather && (
+                    <div
+                        className={
+                            "flex fixed justify-center items-center w-screen h-screen bg-white z-[999]"
+                        }
+                    >
+                        <h1>Loading</h1>
+                    </div>
+                ))}
             <Header />
             <div className={"relative z-10"}>
                 <video
