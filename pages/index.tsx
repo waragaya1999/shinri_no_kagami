@@ -7,6 +7,7 @@ import ExpressionsGraph from "@/components/ExpressionsGraph"
 import OtenkiInfo from "@/components/OtenkiInfo"
 import "tailwindcss/tailwind.css"
 import Video from "@/components/Video"
+import LoadingModal from "@/components/LoadingModal"
 
 export default function Home() {
     const { getOtenkiApi, muniCd, prefecture, latlon, weather } = useOtenkiApi()
@@ -19,6 +20,7 @@ export default function Home() {
 
     return (
         <>
+            <LoadingModal videoRef={videoRef} weather={weather} />
             <Header />
             <div className={"relative z-10"}>
                 {/* <video
