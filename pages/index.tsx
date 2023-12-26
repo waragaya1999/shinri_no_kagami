@@ -1,4 +1,6 @@
-import { useEffect } from "react"
+import React, { useEffect, useRef, useState } from "react"
+import * as faceapi from "face-api.js"
+import "tailwindcss/tailwind.css"
 import { useOtenkiApi } from "@/hooks/useOtenkiApi"
 import Header from "@/components/Header"
 import Footer from "@/components/Footer"
