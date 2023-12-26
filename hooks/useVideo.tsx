@@ -19,7 +19,7 @@ export const useVideo = () => {
         disgusted: 0,
         surprised: 0,
     })
-    const videoRef = useRef<HTMLVideoElement | null>(null)
+    const videoRef = useRef<HTMLVideoElement>(null)
 
     const handleExpressions = (expressions: ExpressionsDto) => {
         setExpressions({
