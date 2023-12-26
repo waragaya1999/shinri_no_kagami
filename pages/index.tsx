@@ -6,6 +6,7 @@ import Footer from "@/components/Footer"
 import ExpressionsGraph from "@/components/ExpressionsGraph"
 import OtenkiInfo from "@/components/OtenkiInfo"
 import "tailwindcss/tailwind.css"
+import LoadingModal from "@/components/LoadingModal"
 
 export default function Home() {
     const { getOtenkiApi, muniCd, prefecture, latlon, weather } = useOtenkiApi()
@@ -16,20 +17,9 @@ export default function Home() {
         detectFace()
     }, [])
 
-    console.log(weather?.weather[0].icon)
-
     return (
         <>
-            {!videoRef ||
-                (!weather && (
-                    <div
-                        className={
-                            "flex fixed justify-center items-center w-screen h-screen bg-white z-[999]"
-                        }
-                    >
-                        <h1>Loading</h1>
-                    </div>
-                ))}
+            <LoadingModal videoRef={videoRef} weather={weather} />
             <Header />
             <div className={"relative z-10"}>
                 <video
