@@ -7,8 +7,11 @@ type Props = {
 }
 
 export default function OtenkiInfo({ weather, prefecture }: Props) {
+    console.log(weather?.weather[0].icon)
+
     return (
         <div className={"fixed z-100 top-[5rem] left-[3rem]"}>
+            <img src={`/images/${weather?.weather[0].icon}.svg`} alt="" />
             {weather?.weather[0].main}
             <br />
             {prefecture}
