@@ -1,12 +1,6 @@
-import { useEffect } from "react"
-import { useOtenkiApi } from "@/hooks/useOtenkiApi"
-import { useVideo } from "@/hooks/useVideo"
+import { useLogin } from "@/hooks/useFirestore"
 import Header from "@/components/Header"
 import Footer from "@/components/Footer"
-import ExpressionsGraph from "@/components/ExpressionsGraph"
-import OtenkiInfo from "@/components/OtenkiInfo"
-import "tailwindcss/tailwind.css"
-import { useLogin } from "@/hooks/useFirestore"
 import List from "@/components/List"
 
 export default function ListPage() {
