@@ -1,4 +1,3 @@
-import { ExpWeaFirestoreDto } from "@/types/ExpWeaFirestoreDto"
 import { WeatherInfoDto } from "@/types/WeatherInfoDto"
 import { usePhotoCapture } from "@/hooks/usePhotoCapture"
 
@@ -20,8 +19,8 @@ export default function CapturePhotoButton({ weather, prefecture }: Props) {
         capturePhoto()
     }
     useEffect(() => {
-        if (capturedPhoto && session.data?.user?.email) {
-            // console.log(capturedPhoto)
+        if (capturedPhoto && session.data?.user?.email && weather) {
+            console.log(capturedPhoto)
             insertCapturedPhoto({
                 faceImage: capturedPhoto,
                 email: session.data.user.email,

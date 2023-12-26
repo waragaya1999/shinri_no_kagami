@@ -16,21 +16,16 @@ export default async function handler(
         })
     }
     const db = getFirestore()
-    const name = req.body.name
+    const faceImage = req.body.faceImage
     const email = req.body.email
-    const image = req.body.image
+    const expressions = req.body.expressions
+    const weather = req.body.weather
 
     if (req.method === "POST") {
         try {
-            const querySnapshot = await db
-                .collection(COLLECTION_NAME)
-                .where("email", "==", email)
-                .get()
-            if (querySnapshot.empty) {
-                const docRef = db.collection(COLLECTION_NAME).doc()
-                const insertData = { name, email, image }
-                await docRef.set(insertData)
-            }
+            const docRef = db.collection(COLLECTION_NAME).doc()
+            const insertData = { faceImage, email, expressions, weather }
+            await docRef.set(insertData)
         } catch (error) {
             console.error("Error in Firestore operation:", error)
         }
