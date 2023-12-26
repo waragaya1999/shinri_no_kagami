@@ -1,6 +1,7 @@
 import { SessionProvider } from "next-auth/react"
 import { initializeFirebaseApp } from "../src/lib/firebase/firebase"
 import { getApp } from "firebase/app"
+import "tailwindcss/tailwind.css"
 
 initializeFirebaseApp()
 
