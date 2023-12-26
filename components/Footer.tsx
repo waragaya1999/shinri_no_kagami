@@ -1,9 +1,16 @@
-import React, { useEffect } from "react"
-import { useLogin } from "@/hooks/useLogin"
+import { useEffect } from "react"
+import { useFirestore } from "@/hooks/useFirestore"
 import { signIn, signOut } from "next-auth/react"
+import CapturePhotoButton from "./CapturedPhotoButton"
+import { WeatherInfoDto } from "@/types/WeatherInfoDto"
 
-export default function Footer() {
-    const { session, userCollection, handleUserCollection } = useLogin()
+type Props = {
+    weather: WeatherInfoDto | undefined
+    prefecture: string
+}
+
+export default function Footer({ weather, prefecture }: Props) {
+    const { session, userCollection, handleUserCollection } = useFirestore()
     useEffect(() => {
         handleUserCollection()
     }, [session])
@@ -14,7 +21,7 @@ export default function Footer() {
         >
             <div className="flex justify-between items-center w-[94%] h-[75%] rounded-2xl bg-gray-300 px-6">
                 <img src={"/images/home.svg"} className={"h-[70%]"} />
-                <img src={"/images/capture.svg"} className={"h-[70%]"} />
+                <CapturePhotoButton weather={weather} prefecture={prefecture} />
                 <img src={"/images/record.svg"} className={"h-[70%]"} />
                 {userCollection ? (
                     <>

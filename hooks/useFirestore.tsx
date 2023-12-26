@@ -1,9 +1,10 @@
-import React, { useEffect, useRef, useState } from "react"
-import { signIn, signOut, useSession } from "next-auth/react"
-import { UserFirestoreDto } from "@/types/userFirestoreDto"
+import React, { useState } from "react"
+import { useSession } from "next-auth/react"
+import { UserFirestoreDto } from "@/types/UserFirestoreDto"
 import axios from "axios"
+import { ExpWeaFirestoreDto } from "@/types/ExpWeaFirestoreDto"
 
-export const useLogin = () => {
+export const useFirestore = () => {
     const session = useSession()
     const [userCollection, setUserCollection] = useState<UserFirestoreDto>()
 
@@ -30,5 +31,19 @@ export const useLogin = () => {
         })
     }
 
-    return { session, userCollection, handleUserCollection } as const
+    const insertCapturedPhoto = async (ex: ExpWeaFirestoreDto) => {
+        await axios.post("/api/expWea", {
+            faceImage: ex.faceImage,
+            email: ex.email,
+            expressions: ex.expressions,
+            weather: ex.weather,
+        })
+    }
+
+    return {
+        session,
+        userCollection,
+        handleUserCollection,
+        insertCapturedPhoto,
+    } as const
 }

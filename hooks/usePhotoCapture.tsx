@@ -14,7 +14,6 @@ export const usePhotoCapture = () => {
     const capturePhoto = () => {
         // ビデオ要素を取得
         const video = document.getElementById("video") as HTMLVideoElement
-        console.log("capturePhoto: ", capturedPhoto)
 
         if (video) {
             // キャンバスを作成し、ビデオの幅と高さを設定

@@ -18,20 +18,26 @@ export default function Home() {
 
     return (
         <>
-            <Header />
-            <div className={"relative z-10"}>
-                <video
-                    id="video"
-                    ref={videoRef}
-                    autoPlay
-                    playsInline
-                    muted
-                    className={"w-[94%] rounded-3xl m-auto"}
-                />
-                <ExpressionsGraph expressions={expressions} />
-                <OtenkiInfo weather={weather} prefecture={prefecture} />
-            </div>
-            <Footer />
+            {videoRef && weather ? (
+                <>
+                    <Header />
+                    <div className={"relative z-10"}>
+                        <video
+                            id="video"
+                            ref={videoRef}
+                            // autoPlay
+                            // playsInline
+                            // muted
+                            className={"w-[94%] rounded-3xl m-auto"}
+                        />
+                        <ExpressionsGraph expressions={expressions} />
+                        <OtenkiInfo weather={weather} prefecture={prefecture} />
+                    </div>
+                    <Footer weather={weather} prefecture={prefecture} />
+                </>
+            ) : (
+                <h1>Loading...</h1>
+            )}
         </>
     )
 }
