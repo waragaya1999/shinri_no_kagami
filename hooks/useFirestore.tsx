@@ -32,6 +32,8 @@ export const useFirestore = () => {
     }
 
     const insertCapturedPhoto = async (ex: ExpWeaFirestoreDto) => {
+        console.log(ex.faceImage, ex.email, ex.expressions, ex.weather)
+
         await axios.post("/api/expWea", {
             faceImage: ex.faceImage,
             email: ex.email,

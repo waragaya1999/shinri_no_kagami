@@ -20,7 +20,7 @@ export default function CapturePhotoButton({ weather, prefecture }: Props) {
         capturePhoto()
     }
     useEffect(() => {
-        if (capturedPhoto && session.data?.user?.email) {
+        if (capturedPhoto && session.data?.user?.email && weather) {
             // console.log(capturedPhoto)
             insertCapturedPhoto({
                 faceImage: capturedPhoto,
