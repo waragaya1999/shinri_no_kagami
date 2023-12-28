@@ -44,65 +44,6 @@ export const useFirestore = () => {
     }
 
     const getList = () => {
-        // これはテストデータ
-        // これと同じ型のデータを返して欲しい
-        const testReturnData: ListDto[] = [
-            {
-                date: new Date(),
-                temperature: 10,
-                pressure: 1020,
-                humidity: 40,
-                prefecture: "Tokyo",
-                expressions: {
-                    neutral: 10,
-                    happy: 96,
-                    sad: 85,
-                    angry: 38,
-                    fearful: 82,
-                    disgusted: 33,
-                    surprised: 41,
-                },
-                capturedPhoto: "testCapturedPhoto",
-                icon: "11d",
-            },
-            {
-                date: new Date(),
-                temperature: 10,
-                pressure: 1020,
-                humidity: 40,
-                prefecture: "Kyoto",
-                expressions: {
-                    neutral: 45,
-                    happy: 81,
-                    sad: 70,
-                    angry: 36,
-                    fearful: 88,
-                    disgusted: 71,
-                    surprised: 27,
-                },
-                capturedPhoto: "testCapturedPhoto",
-                icon: "13d",
-            },
-            {
-                date: new Date(),
-                temperature: 10,
-                pressure: 1020,
-                humidity: 40,
-                prefecture: "Hokkaido",
-                expressions: {
-                    neutral: 73,
-                    happy: 79,
-                    sad: 32,
-                    angry: 20,
-                    fearful: 20,
-                    disgusted: 69,
-                    surprised: 76,
-                },
-                capturedPhoto: "testCapturedPhoto",
-                icon: "50d",
-            },
-        ]
-
         return testReturnData
     }
 
@@ -115,4 +56,133 @@ export const useFirestore = () => {
     } as const
 }
 
-const testCapturedPhoto = ""
+// これはテストデータ
+// これと同じ型のデータを返して欲しい
+const testReturnData: ListDto[] = [
+    {
+        date: new Date(new Date().setDate(new Date().getDate() - 0)),
+        temperature: 10,
+        pressure: 1020,
+        humidity: 40,
+        prefecture: "Tokyo",
+        expressions: {
+            neutral: 10,
+            happy: 96,
+            sad: 85,
+            angry: 38,
+            fearful: 82,
+            disgusted: 33,
+            surprised: 41,
+        },
+        capturedPhoto: "testCapturedPhoto",
+        icon: "11d",
+    },
+    {
+        date: new Date(new Date().setDate(new Date().getDate() - 1)),
+        temperature: 10,
+        pressure: 1020,
+        humidity: 40,
+        prefecture: "Kyoto",
+        expressions: {
+            neutral: 45,
+            happy: 81,
+            sad: 70,
+            angry: 36,
+            fearful: 88,
+            disgusted: 71,
+            surprised: 27,
+        },
+        capturedPhoto: "testCapturedPhoto",
+        icon: "13d",
+    },
+    {
+        date: new Date(new Date().setDate(new Date().getDate() - 2)),
+        temperature: 10,
+        pressure: 1020,
+        humidity: 40,
+        prefecture: "Hokkaido",
+        expressions: {
+            neutral: 73,
+            happy: 79,
+            sad: 32,
+            angry: 20,
+            fearful: 20,
+            disgusted: 69,
+            surprised: 76,
+        },
+        capturedPhoto: "testCapturedPhoto",
+        icon: "50d",
+    },
+    {
+        date: new Date(new Date().setDate(new Date().getDate() - 3)),
+        temperature: 10,
+        pressure: 1020,
+        humidity: 40,
+        prefecture: "Hokkaido",
+        expressions: {
+            neutral: 73,
+            happy: 79,
+            sad: 32,
+            angry: 20,
+            fearful: 20,
+            disgusted: 69,
+            surprised: 76,
+        },
+        capturedPhoto: "testCapturedPhoto",
+        icon: "50d",
+    },
+    {
+        date: new Date(new Date().setDate(new Date().getDate() - 4)),
+        temperature: 10,
+        pressure: 1020,
+        humidity: 40,
+        prefecture: "Hokkaido",
+        expressions: {
+            neutral: 73,
+            happy: 79,
+            sad: 32,
+            angry: 20,
+            fearful: 20,
+            disgusted: 69,
+            surprised: 76,
+        },
+        capturedPhoto: "testCapturedPhoto",
+        icon: "50d",
+    },
+    {
+        date: new Date(new Date().setDate(new Date().getDate() - 5)),
+        temperature: 10,
+        pressure: 1020,
+        humidity: 40,
+        prefecture: "Hokkaido",
+        expressions: {
+            neutral: 73,
+            happy: 79,
+            sad: 32,
+            angry: 20,
+            fearful: 20,
+            disgusted: 69,
+            surprised: 76,
+        },
+        capturedPhoto: "testCapturedPhoto",
+        icon: "50d",
+    },
+    {
+        date: new Date(new Date().setDate(new Date().getDate() - 6)),
+        temperature: 10,
+        pressure: 1020,
+        humidity: 40,
+        prefecture: "Hokkaido",
+        expressions: {
+            neutral: 73,
+            happy: 79,
+            sad: 32,
+            angry: 20,
+            fearful: 20,
+            disgusted: 69,
+            surprised: 76,
+        },
+        capturedPhoto: "testCapturedPhoto",
+        icon: "50d",
+    },
+]
