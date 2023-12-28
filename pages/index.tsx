@@ -1,37 +1,23 @@
 import { useEffect } from "react"
 import { useOtenkiApi } from "@/hooks/useOtenkiApi"
-import { useVideo } from "@/hooks/useVideo"
 import Header from "@/components/Header"
 import Footer from "@/components/Footer"
-import ExpressionsGraph from "@/components/ExpressionsGraph"
-import OtenkiInfo from "@/components/OtenkiInfo"
-import "tailwindcss/tailwind.css"
+import LoadingModal from "@/components/LoadingModal"
+import Video from "@/components/Video"
 
 export default function Home() {
-    const { getOtenkiApi, muniCd, prefecture, latlon, weather } = useOtenkiApi()
-    const { detectFace, expressions, videoRef } = useVideo()
+    const { getOtenkiApi, prefecture, weather } = useOtenkiApi()
 
     useEffect(() => {
         getOtenkiApi()
-        detectFace()
     }, [])
 
     return (
         <>
+            <LoadingModal weather={weather} />
             <Header />
-            <div className={"relative z-10"}>
-                <video
-                    id="video"
-                    ref={videoRef}
-                    // autoPlay
-                    // playsInline
-                    // muted
-                    className={"w-[94%] rounded-3xl m-auto"}
-                />
-                <ExpressionsGraph expressions={expressions} />
-                <OtenkiInfo weather={weather} prefecture={prefecture} />
-            </div>
-            <Footer weather={weather} prefecture={prefecture} />
+            <Video weather={weather} prefecture={prefecture} />
+            <Footer />
         </>
     )
 }

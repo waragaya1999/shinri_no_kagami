@@ -24,6 +24,9 @@ export default function Video({ weather, prefecture }: Props) {
                 <video
                     id="video"
                     ref={videoRef}
+                    autoPlay
+                    playsInline
+                    muted
                     className={"w-[94%] rounded-3xl m-auto"}
                 />
             )}

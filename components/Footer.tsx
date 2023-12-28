@@ -3,7 +3,8 @@ import { useFirestore } from "@/hooks/useFirestore"
 import { signIn, signOut } from "next-auth/react"
 import CapturePhotoButton from "./CapturedPhotoButton"
 import { WeatherInfoDto } from "@/types/WeatherInfoDto"
-
+import Link from "next/link"
+        
 type Props = {
     weather: WeatherInfoDto | undefined
     prefecture: string
@@ -22,7 +23,9 @@ export default function Footer({ weather, prefecture }: Props) {
             <div className="flex justify-between items-center w-[94%] h-[75%] rounded-2xl bg-gray-300 px-6">
                 <img src={"/images/home.svg"} className={"h-[70%]"} />
                 <CapturePhotoButton weather={weather} prefecture={prefecture} />
-                <img src={"/images/record.svg"} className={"h-[70%]"} />
+                <Link href={"/listPage"} className={"h-[100%]"}>
+                    <img src={"/images/record.svg"} className={"h-[70%]"} />
+                </Link>
                 {userCollection ? (
                     <>
                         <button

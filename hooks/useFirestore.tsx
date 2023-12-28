@@ -3,6 +3,7 @@ import { useSession } from "next-auth/react"
 import { UserFirestoreDto } from "@/types/UserFirestoreDto"
 import axios from "axios"
 import { ExpWeaFirestoreDto } from "@/types/ExpWeaFirestoreDto"
+import { ListDto } from "@/types/ListDto"
 
 export const useFirestore = () => {
     const session = useSession()
@@ -49,3 +50,66 @@ export const useFirestore = () => {
         insertCapturedPhoto,
     } as const
 }
+      
+    const getList = () => {
+        const testReturnData: ListDto[] = [
+            {
+                date: new Date(),
+                temperature: 10,
+                pressure: 1020,
+                humidity: 40,
+                location: "Tokyo",
+                expressions: {
+                    neutral: 0,
+                    happy: 1,
+                    sad: 0,
+                    angry: 0,
+                    fearful: 0,
+                    disgusted: 0,
+                    surprised: 0,
+                },
+                capturedPhoto: testCapturedPhoto,
+            },
+            {
+                date: new Date(),
+                temperature: 10,
+                pressure: 1020,
+                humidity: 40,
+                location: "Kyoto",
+                expressions: {
+                    neutral: 0,
+                    happy: 0,
+                    sad: 1,
+                    angry: 0,
+                    fearful: 0,
+                    disgusted: 0,
+                    surprised: 0,
+                },
+                capturedPhoto: testCapturedPhoto,
+            },
+            {
+                date: new Date(),
+                temperature: 10,
+                pressure: 1020,
+                humidity: 40,
+                location: "Hokkaido",
+                expressions: {
+                    neutral: 0,
+                    happy: 0,
+                    sad: 0,
+                    angry: 10,
+                    fearful: 0,
+                    disgusted: 0,
+                    surprised: 0,
+                },
+                capturedPhoto: testCapturedPhoto,
+            },
+        ]
+
+        return testReturnData
+    }
+
+    return { session, userCollection, handleUserCollection, getList } as const
+}
+
+const testCapturedPhoto = ""
