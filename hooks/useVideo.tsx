@@ -112,44 +112,18 @@ export const useVideo = () => {
                 detections,
                 displaySize,
             )
+
             // キャンバスをクリア
             canvas
                 ?.getContext("2d")
                 ?.clearRect(0, 0, canvas.width, canvas.height)
             // キャンバスに検出結果を描画
-            // faceapi.draw.drawDetections(canvas, resizedDetections);
-
-            // 感情の閾値（※要調整）
-            const emotionThresholds: EmotionThresholds = {
-                happy: 0.001,
-                sad: 0.004,
-                angry: 0.004,
-            }
+            // faceapi.draw.drawDetections(canvas, resizedDetections)
 
             // 検出結果ごとに処理
             resizedDetections.forEach((detection) => {
                 const expressions = detection.expressions
-
                 handleExpressions(expressions)
-
-                let message = null
-
-                if (
-                    expressions.happy &&
-                    expressions.happy > emotionThresholds.happy
-                ) {
-                    message = "ハッピーな状態です"
-                } else if (
-                    expressions.sad &&
-                    expressions.sad > emotionThresholds.sad
-                ) {
-                    message = "悲しい状態です"
-                } else if (
-                    expressions.angry &&
-                    expressions.angry > emotionThresholds.angry
-                ) {
-                    message = "怒りな状態です"
-                }
             })
             //読み取り間隔(1000=1秒)
         }, 1000)

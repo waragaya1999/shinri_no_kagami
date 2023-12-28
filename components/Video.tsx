@@ -3,6 +3,7 @@ import { useEffect, useState } from "react"
 import { WeatherInfoDto } from "@/types/WeatherInfoDto"
 import ExpressionsGraph from "@/components/ExpressionsGraph"
 import OtenkiInfo from "@/components/OtenkiInfo"
+import LoadingModal from "./LoadingModal"
 
 type Props = {
     weather: WeatherInfoDto | undefined
@@ -18,20 +19,34 @@ export default function Video({ weather, prefecture }: Props) {
         detectFace()
     }, [])
 
+    const [isLoading, setIsLoading] = useState(true)
+
+    const handleLoadedMetadata = () => {
+        setIsLoading(false)
+    }
+
     return (
-        <div className={"relative"}>
-            {isClient && (
-                <video
-                    id="video"
-                    ref={videoRef}
-                    autoPlay
-                    playsInline
-                    muted
-                    className={"w-[94%] rounded-3xl m-auto"}
-                />
-            )}
-            <ExpressionsGraph expressions={expressions} />
-            <OtenkiInfo weather={weather} prefecture={prefecture} />
-        </div>
+        <>
+            {isLoading ? <LoadingModal /> : <></>}
+            <div className={"relative"}>
+                {isClient && (
+                    <video
+                        id="video"
+                        ref={videoRef}
+                        autoPlay
+                        playsInline
+                        muted
+                        className={"w-[94%] rounded-3xl m-auto"}
+                        onLoadedMetadata={handleLoadedMetadata}
+                    />
+                )}
+                {!isLoading && (
+                    <>
+                        <ExpressionsGraph expressions={expressions} />
+                        <OtenkiInfo weather={weather} prefecture={prefecture} />
+                    </>
+                )}
+            </div>
+        </>
     )
 }
