@@ -9,9 +9,9 @@ export default function otenki() {
         getOtenkiApi()
     }
 
-    useEffect(() => {
-        getOtenkiApi()
-    })
+    // useEffect(() => {
+    //     getOtenkiApi()
+    // })
 
     return (
         <>
