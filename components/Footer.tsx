@@ -23,7 +23,9 @@ export default function Footer({ weather, prefecture }: Props) {
             className={"fixed flex justify-center w-full h-[10vh] bottom-0"}
         >
             <div className="flex justify-between items-center w-[94%] h-[75%] rounded-2xl bg-gray-300 px-6">
-                <img src={"/images/home.svg"} className={"h-[70%]"} />
+                <Link href={"/"} className={"flex items-center h-full"}>
+                    <img src={"/images/home.svg"} className={"h-[70%]"} />
+                </Link>
                 <CapturePhotoButton weather={weather} prefecture={prefecture} />
                 <Link
                     href={{
@@ -33,7 +35,7 @@ export default function Footer({ weather, prefecture }: Props) {
                             prefecture: prefecture,
                         },
                     }}
-                    className={"h-[100%]"}
+                    className={"flex items-center h-full"}
                 >
                     <img src={"/images/record.svg"} className={"h-[70%]"} />
                 </Link>
