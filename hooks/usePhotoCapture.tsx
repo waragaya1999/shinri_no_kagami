@@ -14,7 +14,6 @@ export const usePhotoCapture = () => {
     const capturePhoto = () => {
         // ビデオ要素を取得
         const video = document.getElementById("video") as HTMLVideoElement
-        console.log("capturePhoto: ", capturedPhoto)
 
         if (video) {
             // キャンバスを作成し、ビデオの幅と高さを設定
@@ -25,7 +24,7 @@ export const usePhotoCapture = () => {
             const ctx = canvas.getContext("2d")
             ctx?.drawImage(video, 0, 0, canvas.width, canvas.height)
             // キャンバスの画像をデータURLとして取得
-            const dataUrl = canvas.toDataURL("image/png")
+            const dataUrl = canvas.toDataURL("image/jpeg", 0.8)
 
             // 新しい画像要素を作成し、データURLをソースとして設定
             const photo = new Image()
