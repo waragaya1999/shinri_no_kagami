@@ -151,6 +151,10 @@ export const useOtenkiApi = () => {
                         )
                         const data: WeatherInfo = await response.json()
                         setWeather(data)
+                        localStorage.setItem(
+                            "weatherData",
+                            JSON.stringify(data),
+                        )
                     } catch {
                         console.log("error")
                     }
@@ -171,7 +175,19 @@ export const useOtenkiApi = () => {
     }
 
     const getOtenkiApi = () => {
-        getLocation()
+        if (!weather) {
+            console.log("なかった")
+
+            const localDataString = localStorage.getItem("weatherData")
+            if (localDataString) {
+                const localWeather = JSON.parse(localDataString) as WeatherInfo
+                console.log("ローカルにはあった", localWeather)
+                setWeather(localWeather)
+                console.log("セットした")
+            } else {
+                getLocation()
+            }
+        }
     }
 
     return {
