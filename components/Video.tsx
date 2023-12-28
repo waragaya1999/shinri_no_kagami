@@ -14,12 +14,12 @@ export default function Video({ weather, prefecture }: Props) {
     const { detectFace, expressions, videoRef } = useVideo()
     const [isClient, setIsClient] = useState(false)
 
+    const [isLoading, setIsLoading] = useState(true)
+
     useEffect(() => {
         setIsClient(true)
         detectFace()
     }, [])
-
-    const [isLoading, setIsLoading] = useState(true)
 
     const handleLoadedMetadata = () => {
         setIsLoading(false)
@@ -27,7 +27,7 @@ export default function Video({ weather, prefecture }: Props) {
 
     return (
         <>
-            {isLoading ? <LoadingModal /> : <></>}
+            {isLoading && <LoadingModal />}
             <div className={"relative"}>
                 {isClient && (
                     <video
@@ -40,6 +40,7 @@ export default function Video({ weather, prefecture }: Props) {
                         onLoadedMetadata={handleLoadedMetadata}
                     />
                 )}
+                {/* ここの書き方くどいけどレイアウトの関係上仕方がなかったんや... */}
                 {!isLoading && (
                     <>
                         <ExpressionsGraph expressions={expressions} />
