@@ -27,16 +27,7 @@ export default function Footer({ weather, prefecture }: Props) {
                     <img src={"/images/home.svg"} className={"h-[70%]"} />
                 </Link>
                 <CapturePhotoButton weather={weather} prefecture={prefecture} />
-                <Link
-                    href={{
-                        pathname: "/listPage",
-                        query: {
-                            weather: weatherString,
-                            prefecture: prefecture,
-                        },
-                    }}
-                    className={"flex items-center h-full"}
-                >
+                <Link href={"/listPage"} className={"flex items-center h-full"}>
                     <img src={"/images/record.svg"} className={"h-[70%]"} />
                 </Link>
                 {userCollection ? (

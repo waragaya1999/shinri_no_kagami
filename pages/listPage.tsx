@@ -3,14 +3,17 @@ import Footer from "@/components/Footer"
 import List from "@/components/List"
 import { useFirestore } from "@/hooks/useFirestore"
 import { useRouter } from "next/router"
+import { useOtenkiApi } from "@/hooks/useOtenkiApi"
+import { useEffect } from "react"
 
 export default function ListPage() {
-    const router = useRouter()
-    const { weather, prefecture } = router.query
     const { getList } = useFirestore()
+    const { getOtenkiApi, weather, prefecture } = useOtenkiApi()
     const list = getList()
-    const weatherObject = weather ? JSON.parse(weather as string) : null
-    const prefectureString = prefecture ? (prefecture as string) : ""
+
+    useEffect(() => {
+        getOtenkiApi()
+    }, [])
 
     return (
         <>
@@ -19,7 +22,7 @@ export default function ListPage() {
                 {list &&
                     list.map((item, key) => <List key={key} data={item} />)}
             </div>
-            <Footer weather={weatherObject} prefecture={prefectureString} />
+            <Footer weather={weather} prefecture={prefecture} />
         </>
     )
 }
