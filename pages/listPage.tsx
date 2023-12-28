@@ -17,12 +17,10 @@ export default function ListPage() {
 
     return (
         <>
-            <Header />
             <div className={"relative z-10 p-4"}>
                 {list &&
                     list.map((item, key) => <List key={key} data={item} />)}
             </div>
-            <Footer weather={weather} prefecture={prefecture} />
         </>
     )
 }

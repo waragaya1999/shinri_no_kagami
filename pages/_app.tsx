@@ -2,6 +2,7 @@ import { SessionProvider } from "next-auth/react"
 import { initializeFirebaseApp } from "../src/lib/firebase/firebase"
 import { getApp } from "firebase/app"
 import "tailwindcss/tailwind.css"
+import Layout from "@/components/Layout"
 
 initializeFirebaseApp()
 
@@ -15,7 +16,9 @@ function MyApp({
     console.log(getApp())
     return (
         <SessionProvider session={session}>
-            <Component {...pageProps} />
+            <Layout>
+                <Component {...pageProps} />
+            </Layout>
         </SessionProvider>
     )
 }
