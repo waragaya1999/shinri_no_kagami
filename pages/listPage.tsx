@@ -1,11 +1,16 @@
-import { useLogin } from "@/hooks/useFirestore"
 import Header from "@/components/Header"
 import Footer from "@/components/Footer"
 import List from "@/components/List"
+import { useFirestore } from "@/hooks/useFirestore"
+import { useRouter } from "next/router"
 
 export default function ListPage() {
-    const { getList } = useLogin()
+    const router = useRouter()
+    const { weather, prefecture } = router.query
+    const { getList } = useFirestore()
     const list = getList()
+    const weatherObject = weather ? JSON.parse(weather as string) : null
+    const prefectureString = prefecture ? (prefecture as string) : ""
 
     return (
         <>
@@ -14,7 +19,7 @@ export default function ListPage() {
                 {list &&
                     list.map((item, index) => <List key={index} data={item} />)}
             </div>
-            <Footer />
+            <Footer weather={weatherObject} prefecture={prefectureString} />
         </>
     )
 }

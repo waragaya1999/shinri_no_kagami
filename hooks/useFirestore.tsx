@@ -1,9 +1,9 @@
-import React, { useState } from "react"
+import { useState } from "react"
 import { useSession } from "next-auth/react"
-import { UserFirestoreDto } from "@/types/UserFirestoreDto"
 import axios from "axios"
 import { ExpWeaFirestoreDto } from "@/types/ExpWeaFirestoreDto"
 import { ListDto } from "@/types/ListDto"
+import { UserFirestoreDto } from "@/types/userFirestoreDto"
 
 export const useFirestore = () => {
     const session = useSession()
@@ -43,14 +43,6 @@ export const useFirestore = () => {
         })
     }
 
-    return {
-        session,
-        userCollection,
-        handleUserCollection,
-        insertCapturedPhoto,
-    } as const
-}
-      
     const getList = () => {
         const testReturnData: ListDto[] = [
             {
@@ -109,7 +101,13 @@ export const useFirestore = () => {
         return testReturnData
     }
 
-    return { session, userCollection, handleUserCollection, getList } as const
+    return {
+        session,
+        userCollection,
+        handleUserCollection,
+        insertCapturedPhoto,
+        getList,
+    } as const
 }
 
 const testCapturedPhoto = ""

@@ -17,7 +17,7 @@ export default function Home() {
             <LoadingModal weather={weather} />
             <Header />
             <Video weather={weather} prefecture={prefecture} />
-            <Footer />
+            <Footer weather={weather} prefecture={prefecture} />
         </>
     )
 }
