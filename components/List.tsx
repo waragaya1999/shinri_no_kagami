@@ -4,17 +4,14 @@ import { ListDto } from "@/types/ListDto"
 
 type Props = {
     data: ListDto
-    index: number
 }
-export default function List({ index, data }: Props) {
+export default function List({ data }: Props) {
     const { dateFormatter } = useDateFormat()
     const { formatExpressions } = useList()
     const formattedExpressions = formatExpressions(data.expressions)
+
     return (
-        <div
-            key={index}
-            className="m-4 p-4 rounded-2xl bg-slate-800 text-white"
-        >
+        <div className="m-4 p-4 rounded-2xl bg-slate-800 text-white">
             <div className="flex justify-between">
                 <div className=" grid gap-2">
                     <p className=" text-xl">{dateFormatter(data.date)}</p>
