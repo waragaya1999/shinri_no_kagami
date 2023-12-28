@@ -17,7 +17,7 @@ export default function ListPage() {
             <Header />
             <div className={"relative z-10 p-4"}>
                 {list &&
-                    list.map((item, index) => <List key={index} data={item} />)}
+                    list.map((item, key) => <List key={key} data={item} />)}
             </div>
             <Footer weather={weatherObject} prefecture={prefectureString} />
         </>
