@@ -11,7 +11,7 @@ export default function LoadingModal() {
     return (
         <div
             className={
-                "flex fixed justify-center items-center w-screen h-screen bg-white z-[999]"
+                "fixed flex justify-center items-center w-screen h-screen bg-white z-[999] mt-[-4rem]"
             }
         >
             <h1>

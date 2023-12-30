@@ -17,7 +17,7 @@ export default function ListPage() {
 
     return (
         <>
-            <div className={"relative z-10 p-4"}>
+            <div className={"relative p-4 pb-[10vh]"}>
                 {list &&
                     list.map((item, key) => <List key={key} data={item} />)}
             </div>

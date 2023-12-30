@@ -13,7 +13,6 @@ type Props = {
 export default function Video({ weather, prefecture }: Props) {
     const { detectFace, expressions, videoRef } = useVideo()
     const [isClient, setIsClient] = useState(false)
-
     const [isLoading, setIsLoading] = useState(true)
 
     useEffect(() => {

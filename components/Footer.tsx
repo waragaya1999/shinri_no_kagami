@@ -21,7 +21,7 @@ export default function Footer({ weather, prefecture }: Props) {
     return (
         <footer
             className={
-                "fixed flex justify-center w-full h-[10vh] bottom-0 z-10"
+                "fixed flex justify-center w-full h-[10vh] bg-white bottom-0 z-10"
             }
         >
             <div className="flex justify-between items-center w-[94%] h-[75%] rounded-2xl bg-gray-300 px-6">
