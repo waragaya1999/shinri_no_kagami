@@ -148,8 +148,13 @@ export const useOtenkiApi = () => {
         }
     }
 
+    const reloadOtenkiApi = () => {
+        getLocation()
+    }
+
     return {
         getOtenkiApi,
+        reloadOtenkiApi,
         muniCd,
         prefecture,
         latlon,

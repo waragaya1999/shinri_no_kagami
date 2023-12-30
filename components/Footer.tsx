@@ -4,6 +4,7 @@ import { signIn, signOut } from "next-auth/react"
 import CapturePhotoButton from "./CapturedPhotoButton"
 import { WeatherInfoDto } from "@/types/WeatherInfoDto"
 import Link from "next/link"
+import { useOtenkiApi } from "@/hooks/useOtenkiApi"
 
 type Props = {
     weather: WeatherInfoDto | undefined
@@ -11,6 +12,7 @@ type Props = {
 }
 
 export default function Footer({ weather, prefecture }: Props) {
+    const { reloadOtenkiApi } = useOtenkiApi()
     const { session, userCollection, handleUserCollection } = useFirestore()
     const weatherString = JSON.stringify(weather)
 
@@ -18,6 +20,9 @@ export default function Footer({ weather, prefecture }: Props) {
         handleUserCollection()
     }, [session])
 
+    const handleReloadOnClick = () => {
+        reloadOtenkiApi()
+    }
     return (
         <footer
             className={
@@ -25,6 +30,7 @@ export default function Footer({ weather, prefecture }: Props) {
             }
         >
             <div className="flex justify-between items-center w-[94%] h-[75%] rounded-2xl bg-gray-300 px-6">
+                <button onClick={() => handleReloadOnClick()}>Reload</button>
                 <Link href={"/"} className={"flex items-center h-full"}>
                     <img src={"/images/home.svg"} className={"h-[70%]"} />
                 </Link>
