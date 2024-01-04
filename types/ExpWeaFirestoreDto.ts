@@ -1,14 +1,15 @@
 import { ExpressionsDto } from "./ExpressionsDto"
 
 export type ExpWeaFirestoreDto = {
-    faceImage: string
+    capturedPhoto: string
     email: string
     expressions: ExpressionsDto
     weather: {
         location: string
         weather: string
-        temp: number
+        temperature: number
         humidity: number
         pressure: number
+        icon: string
     }
 }

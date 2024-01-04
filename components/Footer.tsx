@@ -1,7 +1,7 @@
 import { useEffect } from "react"
 import { useFirestore } from "@/hooks/useFirestore"
 import { signIn, signOut } from "next-auth/react"
-import CapturePhotoButton from "./CapturedPhotoButton"
+import CapturePhotoButton from "./CapturePhotoButton"
 import { WeatherInfoDto } from "@/types/WeatherInfoDto"
 import Link from "next/link"
 

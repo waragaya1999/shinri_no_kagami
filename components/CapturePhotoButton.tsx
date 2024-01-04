@@ -1,9 +1,8 @@
-import { ExpWeaFirestoreDto } from "@/types/ExpWeaFirestoreDto"
 import { WeatherInfoDto } from "@/types/WeatherInfoDto"
 import { usePhotoCapture } from "@/hooks/usePhotoCapture"
 
 import { useSession } from "next-auth/react"
-import { useEffect, useState } from "react"
+import { useEffect } from "react"
 import { useFirestore } from "@/hooks/useFirestore"
 
 type Props = {
@@ -23,7 +22,7 @@ export default function CapturePhotoButton({ weather, prefecture }: Props) {
         if (capturedPhoto && session.data?.user?.email && weather) {
             // console.log(capturedPhoto)
             insertCapturedPhoto({
-                faceImage: capturedPhoto,
+                capturedPhoto: capturedPhoto,
                 email: session.data.user.email,
                 expressions: {
                     neutral: Number(
@@ -51,7 +50,9 @@ export default function CapturePhotoButton({ weather, prefecture }: Props) {
                 weather: {
                     location: prefecture,
                     weather: weather.weather[0].main,
-                    temp: Number((weather?.main.temp - 273.15).toFixed(1)),
+                    temperature: Number(
+                        (weather?.main.temp - 273.15).toFixed(1),
+                    ),
                     humidity: weather.main.humidity,
                     pressure: weather.main.pressure,
                 },
