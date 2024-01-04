@@ -55,6 +55,7 @@ export default function CapturePhotoButton({ weather, prefecture }: Props) {
                     ),
                     humidity: weather.main.humidity,
                     pressure: weather.main.pressure,
+                    icon: weather.weather[0].icon,
                 },
             })
         }

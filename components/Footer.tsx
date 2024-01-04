@@ -12,7 +12,6 @@ type Props = {
 
 export default function Footer({ weather, prefecture }: Props) {
     const { session, userCollection, handleUserCollection } = useFirestore()
-    const weatherString = JSON.stringify(weather)
 
     useEffect(() => {
         handleUserCollection()

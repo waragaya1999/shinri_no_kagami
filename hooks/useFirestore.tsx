@@ -32,14 +32,29 @@ export const useFirestore = () => {
         })
     }
 
-    const insertCapturedPhoto = async (ex: ExpWeaFirestoreDto) => {
-        console.log(ex.capturedPhoto, ex.email, ex.expressions, ex.weather)
+    const getWeekNumber = (date: Date) => {
+        const d = new Date(
+            Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()),
+        )
+        const dayNum = d.getUTCDay() || 7
+        d.setUTCDate(d.getUTCDate() + 4 - dayNum)
+        const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1))
+        return Math.ceil(
+            ((d.getTime() - yearStart.getTime()) / 86400000 + 1) / 7,
+        )
+    }
 
+    const insertCapturedPhoto = async (ex: ExpWeaFirestoreDto) => {
+        const date = new Date()
+        const weekNumber = getWeekNumber(date)
+        await axios.get(`/api/expWea/${weekNumber}`)
         await axios.post("/api/expWea", {
             capturedPhoto: ex.capturedPhoto,
+            date: date,
             email: ex.email,
             expressions: ex.expressions,
             weather: ex.weather,
+            weekNumber: weekNumber,
         })
     }
 
@@ -60,11 +75,15 @@ export const useFirestore = () => {
 // これと同じ型のデータを返して欲しい
 const testReturnData: ListDto[] = [
     {
+        capturedPhoto: "testCapturedPhoto",
         date: new Date(new Date().setDate(new Date().getDate() - 0)),
-        temperature: 10,
-        pressure: 1020,
-        humidity: 40,
-        prefecture: "Tokyo",
+        weather: {
+            temperature: 10,
+            pressure: 1020,
+            humidity: 40,
+            prefecture: "Tokyo",
+            icon: "11d",
+        },
         expressions: {
             neutral: 10,
             happy: 96,
@@ -74,15 +93,16 @@ const testReturnData: ListDto[] = [
             disgusted: 33,
             surprised: 41,
         },
-        capturedPhoto: "testCapturedPhoto",
-        icon: "11d",
     },
     {
         date: new Date(new Date().setDate(new Date().getDate() - 1)),
-        temperature: 10,
-        pressure: 1020,
-        humidity: 40,
-        prefecture: "Kyoto",
+        weather: {
+            temperature: 10,
+            pressure: 1020,
+            humidity: 40,
+            prefecture: "Kyoto",
+            icon: "13d",
+        },
         expressions: {
             neutral: 45,
             happy: 81,
@@ -93,14 +113,16 @@ const testReturnData: ListDto[] = [
             surprised: 27,
         },
         capturedPhoto: "testCapturedPhoto",
-        icon: "13d",
     },
     {
         date: new Date(new Date().setDate(new Date().getDate() - 2)),
-        temperature: 10,
-        pressure: 1020,
-        humidity: 40,
-        prefecture: "Hokkaido",
+        weather: {
+            temperature: 10,
+            pressure: 1020,
+            humidity: 40,
+            prefecture: "Hokkaido",
+            icon: "50d",
+        },
         expressions: {
             neutral: 73,
             happy: 79,
@@ -111,14 +133,16 @@ const testReturnData: ListDto[] = [
             surprised: 76,
         },
         capturedPhoto: "testCapturedPhoto",
-        icon: "50d",
     },
     {
         date: new Date(new Date().setDate(new Date().getDate() - 3)),
-        temperature: 10,
-        pressure: 1020,
-        humidity: 40,
-        prefecture: "Hokkaido",
+        weather: {
+            temperature: 10,
+            pressure: 1020,
+            humidity: 40,
+            prefecture: "Hokkaido",
+            icon: "50d",
+        },
         expressions: {
             neutral: 73,
             happy: 79,
@@ -129,14 +153,16 @@ const testReturnData: ListDto[] = [
             surprised: 76,
         },
         capturedPhoto: "testCapturedPhoto",
-        icon: "50d",
     },
     {
         date: new Date(new Date().setDate(new Date().getDate() - 4)),
-        temperature: 10,
-        pressure: 1020,
-        humidity: 40,
-        prefecture: "Hokkaido",
+        weather: {
+            temperature: 10,
+            pressure: 1020,
+            humidity: 40,
+            prefecture: "Hokkaido",
+            icon: "50d",
+        },
         expressions: {
             neutral: 73,
             happy: 79,
@@ -147,14 +173,16 @@ const testReturnData: ListDto[] = [
             surprised: 76,
         },
         capturedPhoto: "testCapturedPhoto",
-        icon: "50d",
     },
     {
-        date: new Date(new Date().setDate(new Date().getDate() - 5)),
-        temperature: 10,
-        pressure: 1020,
-        humidity: 40,
-        prefecture: "Hokkaido",
+        date: new Date(new Date().setDate(new Date().getDate() - 4)),
+        weather: {
+            temperature: 10,
+            pressure: 1020,
+            humidity: 40,
+            prefecture: "Hokkaido",
+            icon: "50d",
+        },
         expressions: {
             neutral: 73,
             happy: 79,
@@ -165,14 +193,16 @@ const testReturnData: ListDto[] = [
             surprised: 76,
         },
         capturedPhoto: "testCapturedPhoto",
-        icon: "50d",
     },
     {
-        date: new Date(new Date().setDate(new Date().getDate() - 6)),
-        temperature: 10,
-        pressure: 1020,
-        humidity: 40,
-        prefecture: "Hokkaido",
+        date: new Date(new Date().setDate(new Date().getDate() - 4)),
+        weather: {
+            temperature: 10,
+            pressure: 1020,
+            humidity: 40,
+            prefecture: "Hokkaido",
+            icon: "50d",
+        },
         expressions: {
             neutral: 73,
             happy: 79,
@@ -183,6 +213,5 @@ const testReturnData: ListDto[] = [
             surprised: 76,
         },
         capturedPhoto: "testCapturedPhoto",
-        icon: "50d",
     },
 ]

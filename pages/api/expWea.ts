@@ -8,7 +8,8 @@ export default async function handler(
     req: NextApiRequest,
     res: NextApiResponse,
 ) {
-    const COLLECTION_NAME = "expWea"
+    const year = new Date().getFullYear()
+    const COLLECTION_NAME = `expWea/${year}/${req.body.weekNumber}`
     //　初期化する
     if (admin.apps.length === 0) {
         admin.initializeApp({
@@ -17,6 +18,7 @@ export default async function handler(
     }
     const db = getFirestore()
     const capturedPhoto = req.body.capturedPhoto
+    const date = req.body.date
     const email = req.body.email
     const expressions = req.body.expressions
     const weather = req.body.weather
@@ -24,8 +26,14 @@ export default async function handler(
     if (req.method === "POST") {
         try {
             const docRef = db.collection(COLLECTION_NAME).doc()
-            const insertData = { capturedPhoto, email, expressions, weather }
-            console.log(capturedPhoto, email, expressions, weather)
+            const insertData = {
+                capturedPhoto,
+                date,
+                email,
+                expressions,
+                weather,
+            }
+            console.log(capturedPhoto, date, email, expressions, weather)
 
             await docRef.set(insertData)
         } catch (error) {
