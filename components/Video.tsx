@@ -11,7 +11,8 @@ type Props = {
 }
 
 export default function Video({ weather, prefecture }: Props) {
-    const { detectFace, expressions, videoRef, clearCanvas } = useVideo()
+    const { detectFace, expressions, videoRef, clearCanvas, isVideoActive } =
+        useVideo()
     const [isClient, setIsClient] = useState(false)
     const [isLoading, setIsLoading] = useState(true)
 
@@ -27,40 +28,41 @@ export default function Video({ weather, prefecture }: Props) {
         setIsLoading(false)
     }
 
-    const handleTestButtonOnClick = () => {
-        console.log(videoRef)
-        if (videoRef) {
-            console.log("videoRef : true")
-        } else {
-            console.log("videoRef : false")
-        }
-    }
-
     return (
         <>
             {isLoading && <LoadingModal />}
-            <div className={"relative pt-3"}>
-                {isClient && videoRef !== null && (
-                    <video
-                        id="video"
-                        ref={videoRef}
-                        autoPlay
-                        playsInline
-                        muted
-                        className={"w-[94%] rounded-3xl m-auto"}
-                        onLoadedMetadata={handleLoadedMetadata}
-                    />
-                )}
-                {/* ここの書き方くどいけどレイアウトの関係上仕方がなかったんや... */}
-                {!isLoading && (
-                    <>
-                        <ExpressionsGraph expressions={expressions} />
-                        <OtenkiInfo weather={weather} prefecture={prefecture} />
-                    </>
-                )}
-            </div>
-            <button onClick={() => clearCanvas()}>てすおt</button>
-            <button onClick={() => handleTestButtonOnClick()}>テスト</button>
+            {isVideoActive ? (
+                <div className={"relative pt-3"}>
+                    {isClient && (
+                        <video
+                            id="video"
+                            ref={videoRef}
+                            autoPlay
+                            playsInline
+                            muted
+                            className={"w-[94%] rounded-3xl m-auto"}
+                            onLoadedMetadata={handleLoadedMetadata}
+                        />
+                    )}
+                    {/* ここの書き方くどいけどレイアウトの関係上仕方がなかったんや... */}
+                    {!isLoading && (
+                        <>
+                            <ExpressionsGraph expressions={expressions} />
+                            <OtenkiInfo
+                                weather={weather}
+                                prefecture={prefecture}
+                            />
+                        </>
+                    )}
+                </div>
+            ) : (
+                <>
+                    <h1>カメラが停止しました</h1>
+                    <p>ブラウザを更新してください</p>
+                </>
+            )}
+
+            <button onClick={() => clearCanvas()}>videoの停止ボタン</button>
         </>
     )
 }

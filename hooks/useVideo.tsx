@@ -1,4 +1,4 @@
-import { useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import * as faceapi from "face-api.js"
 import { ExpressionsDto } from "@/types/ExpressionsDto"
 
@@ -21,6 +21,7 @@ export const useVideo = () => {
     })
     const videoRef = useRef<HTMLVideoElement | null>(null)
     const streamRef = useRef<MediaStream | null>(null)
+    const [isVideoActive, setIsVideoActive] = useState(true)
 
     const handleExpressions = (expressions: ExpressionsDto) => {
         setExpressions({
@@ -95,16 +96,18 @@ export const useVideo = () => {
         }
 
         // ビデオストリームを停止
-        const video = videoRef.current
-        if (video && video.srcObject) {
-            const stream = video.srcObject as MediaStream
-            stream.getTracks().forEach((track) => track.stop())
+        if (streamRef.current) {
+            streamRef.current.getTracks().forEach((track) => track.stop())
+            streamRef.current = null
         }
+
+        setIsVideoActive(false)
     }
 
     const detectFace = async () => {
         await loadFaceAPIModels()
         const video = await setupCamera()
+
         if (video) {
             await video.play()
         }
@@ -155,11 +158,19 @@ export const useVideo = () => {
         }, 1000)
     }
 
+    useEffect(() => {
+        if (videoRef.current && videoRef.current.srcObject) {
+            const stream = videoRef.current.srcObject as MediaStream
+            setIsVideoActive(stream.active)
+        }
+    }, [videoRef.current?.srcObject])
+
     return {
         expressions,
         videoRef,
         detectFace,
         setupCamera,
         clearCanvas,
+        isVideoActive,
     } as const
 }
