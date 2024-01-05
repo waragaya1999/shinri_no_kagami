@@ -6,6 +6,13 @@ type Props = {
     expressions: ExpressionsDto
 }
 export default function ExpressionsGraph({ expressions }: Props) {
+    const maxExpressionKey = Object.keys(expressions).reduce((a, b) =>
+        expressions[a as keyof ExpressionsDto] >
+        expressions[b as keyof ExpressionsDto]
+            ? a
+            : b,
+    ) as keyof ExpressionsDto
+
     return (
         <div
             className={
@@ -17,12 +24,21 @@ export default function ExpressionsGraph({ expressions }: Props) {
                     "flex justify-between items-end w-full h-[70%] bg-gray-300 rounded-t-2xl"
                 }
             >
-                {ExpressionBar(expressions.neutral)}
-                {ExpressionBar(expressions.happy)}
-                {ExpressionBar(expressions.sad)}
-                {ExpressionBar(expressions.angry)}
-                {ExpressionBar(expressions.fearful)}
-                {ExpressionBar(expressions.surprised)}
+                {ExpressionBar(
+                    expressions.neutral,
+                    maxExpressionKey === "neutral",
+                )}
+                {ExpressionBar(expressions.happy, maxExpressionKey === "happy")}
+                {ExpressionBar(expressions.sad, maxExpressionKey === "sad")}
+                {ExpressionBar(expressions.angry, maxExpressionKey === "angry")}
+                {ExpressionBar(
+                    expressions.fearful,
+                    maxExpressionKey === "fearful",
+                )}
+                {ExpressionBar(
+                    expressions.surprised,
+                    maxExpressionKey === "surprised",
+                )}
             </div>
             <div className={"w-full h-[30%]"}>
                 <ul className={"flex w-full h-full"}>
