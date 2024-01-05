@@ -7,11 +7,13 @@ import { useOtenkiApi } from "@/hooks/useOtenkiApi"
 import { useEffect } from "react"
 import { ListDto } from "@/types/ListDto"
 import { useSession } from "next-auth/react"
+import { useModal } from "@/hooks/useModal"
 
 export default function ListPage() {
     const { list, handleList } = useFirestore()
     const { getOtenkiApi, weather, prefecture } = useOtenkiApi()
     const session = useSession()
+    const { modalPhoto, setModalPhoto } = useModal()
 
     useEffect(() => {
         getOtenkiApi()
@@ -21,8 +23,15 @@ export default function ListPage() {
     return (
         <>
             <div className={"relative p-4 pb-[10vh]"}>
+                <img src={modalPhoto} alt="" />
                 {list &&
-                    list.map((item, key) => <List key={key} data={item} />)}
+                    list.map((item, key) => (
+                        <List
+                            key={key}
+                            data={item}
+                            setModalPhoto={setModalPhoto}
+                        />
+                    ))}
             </div>
         </>
     )

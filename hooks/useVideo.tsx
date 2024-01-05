@@ -129,5 +129,10 @@ export const useVideo = () => {
         }, 1000)
     }
 
+    const clearCanvas = () => {
+        // ここの続きを書いて
+        // 処理の内容は、detectFaceを停止させ、detectFaceで生成されたcanvasを削除すること
+    }
+
     return { expressions, videoRef, detectFace, setupCamera } as const
 }

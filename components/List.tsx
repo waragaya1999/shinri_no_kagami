@@ -4,13 +4,21 @@ import { ListDto } from "@/types/ListDto"
 import { useFirestore } from "@/hooks/useFirestore"
 import { useEffect, useLayoutEffect } from "react"
 import { useSession } from "next-auth/react"
+import Link from "next/link"
+import { useModal } from "@/hooks/useModal"
 
 type Props = {
     data: ListDto
+    setModalPhoto: (capturedPhoto: string) => void
 }
-export default function List({ data }: Props) {
+export default function List({ data, setModalPhoto }: Props) {
     const { formatExpressions } = useList()
     const formattedExpressions = formatExpressions(data.expressions)
+
+    const handleCapturedPhotoOnClick = () => {
+        console.log("handleOnClick run ")
+        setModalPhoto(data.capturedPhoto)
+    }
 
     return (
         <div className="m-4 p-4 rounded-2xl bg-slate-800 text-white">
@@ -67,6 +75,7 @@ export default function List({ data }: Props) {
                     </ul>
                 </div>
                 <div
+                    onClick={() => handleCapturedPhotoOnClick()}
                     className={"w-[28%] h-28 rounded-xl"}
                     style={{
                         backgroundImage: `url(${data.capturedPhoto})`,
