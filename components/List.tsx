@@ -9,15 +9,14 @@ import { useModal } from "@/hooks/useModal"
 
 type Props = {
     data: ListDto
-    setModalPhoto: (capturedPhoto: string) => void
+    setCapturedPhotoModalData: (data: ListDto) => void
 }
-export default function List({ data, setModalPhoto }: Props) {
+export default function List({ data, setCapturedPhotoModalData }: Props) {
     const { formatExpressions } = useList()
     const formattedExpressions = formatExpressions(data.expressions)
 
     const handleCapturedPhotoOnClick = () => {
-        console.log("handleOnClick run ")
-        setModalPhoto(data.capturedPhoto)
+        setCapturedPhotoModalData(data)
     }
 
     return (

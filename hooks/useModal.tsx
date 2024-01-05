@@ -1,14 +1,16 @@
+import { ListDto } from "@/types/ListDto"
 import { useState } from "react"
 
 export const useModal = () => {
-    const [modalPhoto, setModalPhotoState] = useState("")
+    const [capturedPhotoModalData, setModalPhotoState] =
+        useState<ListDto | null>(null)
 
-    const setModalPhoto = (capturedPhoto: string) => {
-        setModalPhotoState(capturedPhoto)
+    const setCapturedPhotoModalData = (modalData: ListDto | null) => {
+        setModalPhotoState(modalData)
     }
 
     return {
-        modalPhoto,
-        setModalPhoto,
+        capturedPhotoModalData,
+        setCapturedPhotoModalData,
     }
 }
