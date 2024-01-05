@@ -1,6 +1,7 @@
 import { useDateFormat } from "@/hooks/useDateFormat"
 import { useList } from "@/hooks/useLits"
 import { ListDto } from "@/types/ListDto"
+import Link from "next/link"
 
 type Props = {
     data: ListDto
@@ -64,7 +65,9 @@ export default function List({ data }: Props) {
                         ))}
                     </ul>
                 </div>
-                <img src="/images/testImage.svg" alt="" />
+                <Link href={"/capturedPhotoPage"}>
+                    <img src="/images/testImage.svg" alt="" />
+                </Link>
             </div>
         </div>
     )
