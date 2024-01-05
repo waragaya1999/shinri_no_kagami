@@ -11,24 +11,36 @@ type Props = {
 }
 
 export default function Video({ weather, prefecture }: Props) {
-    const { detectFace, expressions, videoRef } = useVideo()
+    const { detectFace, expressions, videoRef, clearCanvas } = useVideo()
     const [isClient, setIsClient] = useState(false)
     const [isLoading, setIsLoading] = useState(true)
 
     useEffect(() => {
         setIsClient(true)
         detectFace()
+        return () => {
+            clearCanvas()
+        }
     }, [])
 
     const handleLoadedMetadata = () => {
         setIsLoading(false)
     }
 
+    const handleTestButtonOnClick = () => {
+        console.log(videoRef)
+        if (videoRef) {
+            console.log("videoRef : true")
+        } else {
+            console.log("videoRef : false")
+        }
+    }
+
     return (
         <>
             {isLoading && <LoadingModal />}
             <div className={"relative pt-3"}>
-                {isClient && (
+                {isClient && videoRef !== null && (
                     <video
                         id="video"
                         ref={videoRef}
@@ -47,6 +59,8 @@ export default function Video({ weather, prefecture }: Props) {
                     </>
                 )}
             </div>
+            <button onClick={() => clearCanvas()}>てすおt</button>
+            <button onClick={() => handleTestButtonOnClick()}>テスト</button>
         </>
     )
 }

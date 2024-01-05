@@ -19,7 +19,8 @@ export const useVideo = () => {
         disgusted: 0,
         surprised: 0,
     })
-    const videoRef = useRef<HTMLVideoElement>(null)
+    const videoRef = useRef<HTMLVideoElement | null>(null)
+    const streamRef = useRef<MediaStream | null>(null)
 
     const handleExpressions = (expressions: ExpressionsDto) => {
         setExpressions({
@@ -50,6 +51,8 @@ export const useVideo = () => {
                 constraints,
             )
 
+            streamRef.current = stream
+
             if (video) {
                 video.srcObject = stream
                 video.style.transform = "scaleX(-1)"
@@ -76,6 +79,29 @@ export const useVideo = () => {
         await faceapi.nets.faceExpressionNet.load("/models")
     }
 
+    const intervalId = useRef<NodeJS.Timeout | null>(null)
+
+    const clearCanvas = () => {
+        // setIntervalをクリア
+        if (intervalId.current) {
+            clearInterval(intervalId.current)
+            intervalId.current = null
+        }
+
+        // Canvasを削除
+        const canvas = document.querySelector("canvas")
+        if (canvas && canvas.parentNode) {
+            canvas.parentNode.removeChild(canvas)
+        }
+
+        // ビデオストリームを停止
+        const video = videoRef.current
+        if (video && video.srcObject) {
+            const stream = video.srcObject as MediaStream
+            stream.getTracks().forEach((track) => track.stop())
+        }
+    }
+
     const detectFace = async () => {
         await loadFaceAPIModels()
         const video = await setupCamera()
@@ -97,7 +123,7 @@ export const useVideo = () => {
         }
         faceapi.matchDimensions(canvas, displaySize)
 
-        setInterval(async () => {
+        intervalId.current = setInterval(async () => {
             const detections = await faceapi
                 .detectAllFaces(
                     video as HTMLVideoElement,
@@ -129,10 +155,11 @@ export const useVideo = () => {
         }, 1000)
     }
 
-    const clearCanvas = () => {
-        // ここの続きを書いて
-        // 処理の内容は、detectFaceを停止させ、detectFaceで生成されたcanvasを削除すること
-    }
-
-    return { expressions, videoRef, detectFace, setupCamera } as const
+    return {
+        expressions,
+        videoRef,
+        detectFace,
+        setupCamera,
+        clearCanvas,
+    } as const
 }
