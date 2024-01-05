@@ -5,14 +5,17 @@ import { useFirestore } from "@/hooks/useFirestore"
 import { useRouter } from "next/router"
 import { useOtenkiApi } from "@/hooks/useOtenkiApi"
 import { useEffect } from "react"
+import { ListDto } from "@/types/ListDto"
+import { useSession } from "next-auth/react"
 
 export default function ListPage() {
-    const { getList } = useFirestore()
+    const { list, handleList } = useFirestore()
     const { getOtenkiApi, weather, prefecture } = useOtenkiApi()
-    const list = getList()
+    const session = useSession()
 
     useEffect(() => {
         getOtenkiApi()
+        handleList(session.data?.user?.email as string).then((res) => {})
     }, [])
 
     return (

@@ -27,7 +27,7 @@ export default function Video({ weather, prefecture }: Props) {
     return (
         <>
             {isLoading && <LoadingModal />}
-            <div className={"relative"}>
+            <div className={"relative pt-3"}>
                 {isClient && (
                     <video
                         id="video"

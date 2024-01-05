@@ -10,7 +10,7 @@ export default function OtenkiInfo({ weather, prefecture }: Props) {
     return (
         <div
             className={
-                "absolute flex justify-between w-fit top-[2%] left-[6%] rounded-xl bg-black bg-opacity-30 z-100 p-3"
+                "absolute flex justify-between w-fit top-[3%] left-[6%] rounded-xl bg-black bg-opacity-30 z-100 p-3"
             }
         >
             <div className={"w-10 mr-2"}>

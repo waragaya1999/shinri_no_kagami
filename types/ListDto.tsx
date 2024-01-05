@@ -1,7 +1,7 @@
 import { ExpressionsDto } from "./ExpressionsDto"
 
 export type ListDto = {
-    date: Date
+    date: string
     weather: {
         temperature: number
         pressure: number

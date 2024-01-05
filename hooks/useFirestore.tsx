@@ -8,6 +8,7 @@ import { UserFirestoreDto } from "@/types/userFirestoreDto"
 export const useFirestore = () => {
     const session = useSession()
     const [userCollection, setUserCollection] = useState<UserFirestoreDto>()
+    const [list, setList] = useState<ListDto[]>()
 
     const handleUserCollection = () => {
         if (
@@ -46,11 +47,17 @@ export const useFirestore = () => {
 
     const insertCapturedPhoto = async (ex: ExpWeaFirestoreDto) => {
         const date = new Date()
+        const year = date.getFullYear()
+        const month = date.getMonth() + 1
+        const day = date.getDate()
+        const dayOfWeek = date.getDay()
+        const dayOfWeekStr = ["日", "月", "火", "水", "木", "金", "土"][
+            dayOfWeek
+        ]
         const weekNumber = getWeekNumber(date)
-        await axios.get(`/api/expWea/${weekNumber}`)
         await axios.post("/api/expWea", {
             capturedPhoto: ex.capturedPhoto,
-            date: date,
+            date: `${year}/${month}/${day}(${dayOfWeekStr})`,
             email: ex.email,
             expressions: ex.expressions,
             weather: ex.weather,
@@ -58,160 +65,23 @@ export const useFirestore = () => {
         })
     }
 
-    const getList = () => {
-        return testReturnData
+    const getList = async (email: string) => {
+        const response = await axios.get(`/api/getList?email=${email}`)
+        return response.data
+        // return testReturnData
+    }
+
+    const handleList = async (email: string) => {
+        const response = await getList(email)
+        setList(response)
     }
 
     return {
+        list,
         session,
         userCollection,
         handleUserCollection,
         insertCapturedPhoto,
-        getList,
+        handleList,
     } as const
 }
-
-// これはテストデータ
-// これと同じ型のデータを返して欲しい
-const testReturnData: ListDto[] = [
-    {
-        capturedPhoto: "testCapturedPhoto",
-        date: new Date(new Date().setDate(new Date().getDate() - 0)),
-        weather: {
-            temperature: 10,
-            pressure: 1020,
-            humidity: 40,
-            prefecture: "Tokyo",
-            icon: "11d",
-        },
-        expressions: {
-            neutral: 10,
-            happy: 96,
-            sad: 85,
-            angry: 38,
-            fearful: 82,
-            disgusted: 33,
-            surprised: 41,
-        },
-    },
-    {
-        date: new Date(new Date().setDate(new Date().getDate() - 1)),
-        weather: {
-            temperature: 10,
-            pressure: 1020,
-            humidity: 40,
-            prefecture: "Kyoto",
-            icon: "13d",
-        },
-        expressions: {
-            neutral: 45,
-            happy: 81,
-            sad: 70,
-            angry: 36,
-            fearful: 88,
-            disgusted: 71,
-            surprised: 27,
-        },
-        capturedPhoto: "testCapturedPhoto",
-    },
-    {
-        date: new Date(new Date().setDate(new Date().getDate() - 2)),
-        weather: {
-            temperature: 10,
-            pressure: 1020,
-            humidity: 40,
-            prefecture: "Hokkaido",
-            icon: "50d",
-        },
-        expressions: {
-            neutral: 73,
-            happy: 79,
-            sad: 32,
-            angry: 20,
-            fearful: 20,
-            disgusted: 69,
-            surprised: 76,
-        },
-        capturedPhoto: "testCapturedPhoto",
-    },
-    {
-        date: new Date(new Date().setDate(new Date().getDate() - 3)),
-        weather: {
-            temperature: 10,
-            pressure: 1020,
-            humidity: 40,
-            prefecture: "Hokkaido",
-            icon: "50d",
-        },
-        expressions: {
-            neutral: 73,
-            happy: 79,
-            sad: 32,
-            angry: 20,
-            fearful: 20,
-            disgusted: 69,
-            surprised: 76,
-        },
-        capturedPhoto: "testCapturedPhoto",
-    },
-    {
-        date: new Date(new Date().setDate(new Date().getDate() - 4)),
-        weather: {
-            temperature: 10,
-            pressure: 1020,
-            humidity: 40,
-            prefecture: "Hokkaido",
-            icon: "50d",
-        },
-        expressions: {
-            neutral: 73,
-            happy: 79,
-            sad: 32,
-            angry: 20,
-            fearful: 20,
-            disgusted: 69,
-            surprised: 76,
-        },
-        capturedPhoto: "testCapturedPhoto",
-    },
-    {
-        date: new Date(new Date().setDate(new Date().getDate() - 4)),
-        weather: {
-            temperature: 10,
-            pressure: 1020,
-            humidity: 40,
-            prefecture: "Hokkaido",
-            icon: "50d",
-        },
-        expressions: {
-            neutral: 73,
-            happy: 79,
-            sad: 32,
-            angry: 20,
-            fearful: 20,
-            disgusted: 69,
-            surprised: 76,
-        },
-        capturedPhoto: "testCapturedPhoto",
-    },
-    {
-        date: new Date(new Date().setDate(new Date().getDate() - 4)),
-        weather: {
-            temperature: 10,
-            pressure: 1020,
-            humidity: 40,
-            prefecture: "Hokkaido",
-            icon: "50d",
-        },
-        expressions: {
-            neutral: 73,
-            happy: 79,
-            sad: 32,
-            angry: 20,
-            fearful: 20,
-            disgusted: 69,
-            surprised: 76,
-        },
-        capturedPhoto: "testCapturedPhoto",
-    },
-]

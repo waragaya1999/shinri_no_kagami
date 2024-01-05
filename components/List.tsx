@@ -1,20 +1,22 @@
 import { useDateFormat } from "@/hooks/useDateFormat"
 import { useList } from "@/hooks/useLits"
 import { ListDto } from "@/types/ListDto"
+import { useFirestore } from "@/hooks/useFirestore"
+import { useEffect, useLayoutEffect } from "react"
+import { useSession } from "next-auth/react"
 
 type Props = {
     data: ListDto
 }
 export default function List({ data }: Props) {
-    const { dateFormatter } = useDateFormat()
     const { formatExpressions } = useList()
     const formattedExpressions = formatExpressions(data.expressions)
 
     return (
         <div className="m-4 p-4 rounded-2xl bg-slate-800 text-white">
-            <div className="flex justify-between">
+            <div className="flex justify-between items-center">
                 <div className=" grid gap-2">
-                    <p className=" text-xl">{dateFormatter(data.date)}</p>
+                    <p className=" text-xl">{data.date}</p>
 
                     <div>
                         <div className="flex items-center ">
@@ -23,19 +25,19 @@ export default function List({ data }: Props) {
                                 alt=""
                                 className="h-4"
                             />
-                            <p className=" mr-2">{data.temperature}℃</p>
+                            <p className=" mr-2">{data.weather.temperature}℃</p>
                             <img
                                 src="images/humidity.svg"
                                 alt=""
                                 className="h-4"
                             />
-                            <p className=" mr-2">{data.humidity}%</p>
+                            <p className=" mr-2">{data.weather.humidity}%</p>
                             <img
                                 src="images/location.svg"
                                 alt=""
                                 className="h-4"
                             />
-                            <p>{data.prefecture}</p>
+                            <p>{data.weather.prefecture}</p>
                         </div>
 
                         <div className="flex items-center">
@@ -44,9 +46,9 @@ export default function List({ data }: Props) {
                                 alt=""
                                 className="h-4"
                             />
-                            <p className="mr-2">{data.pressure}hPa</p>
+                            <p className="mr-2">{data.weather.pressure}hPa</p>
                             <img
-                                src={`/images/${data.icon}.svg`}
+                                src={`/images/${data.weather.icon}.svg`}
                                 alt={""}
                                 className="h-6"
                             />
@@ -64,7 +66,15 @@ export default function List({ data }: Props) {
                         ))}
                     </ul>
                 </div>
-                <img src="/images/testImage.svg" alt="" />
+                <div
+                    className={"w-[28%] h-28 rounded-xl"}
+                    style={{
+                        backgroundImage: `url(${data.capturedPhoto})`,
+                        backgroundSize: "cover",
+                        backgroundPosition: "center",
+                    }}
+                ></div>
+                {/*<img src={data.capturedPhoto} alt="" />*/}
             </div>
         </div>
     )
