@@ -6,7 +6,7 @@ export type ListDto = {
         temperature: number
         pressure: number
         humidity: number
-        prefecture: string
+        location: string
         icon: string
     }
     expressions: ExpressionsDto

@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { useSession } from "next-auth/react"
-import axios from "axios"
+import axios, { AxiosResponse } from "axios"
 import { ExpWeaFirestoreDto } from "@/types/ExpWeaFirestoreDto"
 import { ListDto } from "@/types/ListDto"
 import { UserFirestoreDto } from "@/types/userFirestoreDto"
@@ -8,7 +8,6 @@ import { UserFirestoreDto } from "@/types/userFirestoreDto"
 export const useFirestore = () => {
     const session = useSession()
     const [userCollection, setUserCollection] = useState<UserFirestoreDto>()
-    const [list, setList] = useState<ListDto[]>()
 
     const handleUserCollection = () => {
         if (
@@ -66,22 +65,17 @@ export const useFirestore = () => {
     }
 
     const getList = async (email: string) => {
-        const response = await axios.get(`/api/getList?email=${email}`)
+        const response: AxiosResponse<ListDto[]> = await axios.get(
+            `/api/getList?email=${email}`,
+        )
         return response.data
-        // return testReturnData
-    }
-
-    const handleList = async (email: string) => {
-        const response = await getList(email)
-        setList(response)
     }
 
     return {
-        list,
         session,
         userCollection,
+        getList,
         handleUserCollection,
         insertCapturedPhoto,
-        handleList,
     } as const
 }

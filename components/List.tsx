@@ -44,7 +44,7 @@ export default function List({ data, setCapturedPhotoModalData }: Props) {
                                 alt=""
                                 className="h-4"
                             />
-                            <p>{data.weather.prefecture}</p>
+                            <p>{data.weather.location}</p>
                         </div>
 
                         <div className="flex items-center">
