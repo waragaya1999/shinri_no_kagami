@@ -18,7 +18,7 @@ export default function CapturedPhotoModal({
     }
 
     return (
-        <div className="fixed inset-0 bg-white flex justify-center mt-16">
+        <div className="fixed inset-0 bg-white flex justify-center mt-16 z-10">
             <div className="relative  rounded-lg bg-white ">
                 <div className=" text-right">
                     <button

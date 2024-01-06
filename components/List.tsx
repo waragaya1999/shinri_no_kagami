@@ -20,7 +20,7 @@ export default function List({ data, setCapturedPhotoModalData }: Props) {
     }
 
     return (
-        <div className="p-4 rounded-2xl bg-slate-800 text-white">
+        <div className="m-4 p-4 rounded-2xl bg-slate-800 text-white">
             <div className="flex justify-between items-center">
                 <div className=" grid gap-2">
                     <p className=" text-xl">{data.date}</p>

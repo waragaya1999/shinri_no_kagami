@@ -26,15 +26,20 @@ export default function List__day({
         <>
             <div className="flex flex-col gap-2">
                 {isOpen ? (
-                    list.map((item, key) => (
-                        <List
-                            key={key}
-                            data={item}
-                            setCapturedPhotoModalData={
-                                setCapturedPhotoModalData
-                            }
-                        />
-                    ))
+                    <div className="bg-[#726868] p-4 flex flex-col gap-2 rounded-xl">
+                        <h1 className=" text-white text-xl text-center pb-2">
+                            {date}
+                        </h1>
+                        {list.map((item, key) => (
+                            <List
+                                key={key}
+                                data={item}
+                                setCapturedPhotoModalData={
+                                    setCapturedPhotoModalData
+                                }
+                            />
+                        ))}
+                    </div>
                 ) : (
                     <List
                         key={date}
