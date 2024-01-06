@@ -66,8 +66,6 @@ export default function Video({ weather, prefecture }: Props) {
                     <p>ブラウザを更新してください</p>
                 </>
             )}
-
-            <button onClick={() => clearCanvas()}>videoの停止ボタン</button>
         </>
     )
 }

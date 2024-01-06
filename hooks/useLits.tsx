@@ -17,8 +17,8 @@ export const useList = () => {
             .map(
                 (expression) =>
                     `${icons[expression[0] as keyof ExpressionsDto]}${
-                        expression[1]
-                    }`,
+                        expression[1] * 100
+                    } `,
             )
 
         return sortedExpressions
