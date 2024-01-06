@@ -5,6 +5,7 @@ type Props = {
 
 import { ListDto } from "@/types/ListDto"
 import ExpressionsGraph from "./ExpressionsGraph"
+import OtenkiInfo from "./OtenkiInfo"
 
 export default function CapturedPhotoModal({
     listData,
@@ -17,22 +18,41 @@ export default function CapturedPhotoModal({
     }
 
     return (
-        <div className="fixed inset-0 bg-black bg-opacity-80 flex justify-center items-center">
-            <div className="relative p-6 rounded-lg">
+        <div className="fixed inset-0 bg-white flex justify-center mt-16">
+            <div className="relative  rounded-lg bg-white ">
                 <div className=" text-right">
                     <button
                         onClick={() => handleOnClick()}
-                        className=" bg-white w-6 text-center "
+                        className=" bg-white text-center text-3xl font-bold"
                     >
                         ✖︎
                     </button>
                 </div>
-                <img
-                    src={listData.capturedPhoto}
-                    alt=""
-                    className=" rounded-3xl m-auto"
-                />
-                <ExpressionsGraph expressions={listData.expressions} />
+                <h1 className=" text-center text-2xl font-bold">
+                    {listData.date}
+                </h1>
+                <div className=" relative pt-3 pb-4 ">
+                    <img
+                        src={listData.capturedPhoto}
+                        alt=""
+                        className="w-[100%] rounded-3xl m-auto"
+                    />
+                    {/* Todo これの方がいいらしいです不甲斐ない僕をゆるちてくれ    
+                    <div
+                        className="w-[100%] h-screen rounded-3xl m-auto"
+                        style={{
+                            backgroundImage: listData.capturedPhoto,
+                            backgroundSize: "cover",
+                            backgroundPosition: "center",
+                        }}
+                    ></div> */}
+
+                    <ExpressionsGraph expressions={listData.expressions} />
+                    <OtenkiInfo
+                        weather={listData.weather}
+                        prefecture={listData.weather.location}
+                    />
+                </div>
             </div>
         </div>
     )

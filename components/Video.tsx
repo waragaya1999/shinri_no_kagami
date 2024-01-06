@@ -45,11 +45,16 @@ export default function Video({ weather, prefecture }: Props) {
                         />
                     )}
                     {/* ここの書き方くどいけどレイアウトの関係上仕方がなかったんや... */}
-                    {!isLoading && (
+                    {!isLoading && weather !== undefined && (
                         <>
                             <ExpressionsGraph expressions={expressions} />
                             <OtenkiInfo
-                                weather={weather}
+                                weather={{
+                                    icon: weather.weather[0].icon,
+                                    temperature: weather.main.temp,
+                                    humidity: weather.main.humidity,
+                                    pressure: weather.main.pressure,
+                                }}
                                 prefecture={prefecture}
                             />
                         </>

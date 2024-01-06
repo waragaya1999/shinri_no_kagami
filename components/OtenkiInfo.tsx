@@ -1,8 +1,15 @@
 import { WeatherInfoDto } from "@/types/WeatherInfoDto"
 import WeatherIcon from "@/components/atoms/WeatherIcon"
 
+export type WeatherForOtenkiInfoComponent = {
+    icon: string
+    temperature: number
+    humidity: number
+    pressure: number
+}
+
 type Props = {
-    weather: WeatherInfoDto | undefined
+    weather: WeatherForOtenkiInfoComponent
     prefecture: string
 }
 
@@ -14,11 +21,8 @@ export default function OtenkiInfo({ weather, prefecture }: Props) {
             }
         >
             <div className={"w-10 mr-2"}>
-                {weather?.weather[0].icon && (
-                    <img
-                        src={`/images/${weather?.weather[0].icon}.svg`}
-                        alt={""}
-                    />
+                {weather.icon && (
+                    <img src={`/images/${weather.icon}.svg`} alt={""} />
                 )}
             </div>
             <div className={"w-fit text-gray-200"}>
@@ -29,15 +33,15 @@ export default function OtenkiInfo({ weather, prefecture }: Props) {
                 <div className={"flex items-center"}>
                     {WeatherIcon("thermometer")}
                     <p className={"mr-1"}>
-                        {weather?.main.temp &&
-                            `${(weather?.main.temp - 273.15).toFixed(1)}℃`}
+                        {weather.temperature &&
+                            `${(weather.temperature - 273.15).toFixed(1)}℃`}
                     </p>
                     {WeatherIcon("humidity")}
-                    <p>{weather?.main.humidity}%</p>
+                    <p>{weather.humidity}%</p>
                 </div>
                 <div className={"flex items-center"}>
                     {WeatherIcon("barometer")}
-                    <p>{weather?.main.pressure}hPa</p>
+                    <p>{weather.pressure}hPa</p>
                 </div>
             </div>
         </div>
