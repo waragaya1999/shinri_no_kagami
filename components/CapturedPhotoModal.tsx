@@ -35,7 +35,7 @@ export default function CapturedPhotoModal({
                     <img
                         src={listData.capturedPhoto}
                         alt=""
-                        className="w-[100%] rounded-3xl m-auto"
+                        className="w-[100%] rounded-3xl m-auto scale-x-[-1]"
                     />
                     {/* Todo これの方がいいらしいです不甲斐ない僕をゆるちてくれ    
                     <div
