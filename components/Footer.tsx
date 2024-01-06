@@ -19,7 +19,6 @@ export default function Footer({ weather, prefecture }: Props) {
     useEffect(() => {
         handleUserCollection()
     }, [session])
-    const { clearCanvas } = useVideo()
 
     return (
         <>
