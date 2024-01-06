@@ -50,7 +50,7 @@ export default function List__day({
             </div>
 
             {list.length > 1 && (
-                <div className=" w-[100%] flex justify-end -mt-4">
+                <div className=" w-[100%] flex justify-end -mt-8">
                     {isOpen ? (
                         <img
                             onClick={() => handleMinusOnClick()}
