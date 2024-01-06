@@ -4,6 +4,7 @@ import { usePhotoCapture } from "@/hooks/usePhotoCapture"
 import { useSession } from "next-auth/react"
 import { useEffect } from "react"
 import { useFirestore } from "@/hooks/useFirestore"
+import { useVideo } from "@/hooks/useVideo"
 
 type Props = {
     weather: WeatherInfoDto | undefined
@@ -13,14 +14,22 @@ type Props = {
 export default function CapturePhotoButton({ weather, prefecture }: Props) {
     const { capturePhoto, capturedPhoto, capturedExpressions } =
         usePhotoCapture()
+    const { clearCanvas } = useVideo()
     const { insertCapturedPhoto } = useFirestore()
     const session = useSession()
     const handleOnClick = () => {
         capturePhoto()
     }
     useEffect(() => {
-        if (capturedPhoto && session.data?.user?.email && weather) {
+        if (
+            capturedPhoto &&
+            session.data?.user?.email &&
+            weather &&
+            capturedExpressions[0] !== undefined
+        ) {
             // console.log(capturedPhoto)
+            console.log("スクショ撮った")
+
             insertCapturedPhoto({
                 capturedPhoto: capturedPhoto,
                 email: session.data.user.email,
@@ -58,6 +67,8 @@ export default function CapturePhotoButton({ weather, prefecture }: Props) {
                     icon: weather.weather[0].icon,
                 },
             })
+        } else {
+            console.log("スクショはまだ準備中")
         }
     }, [capturedPhoto])
 
