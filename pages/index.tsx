@@ -10,5 +10,9 @@ export default function Home() {
         getOtenkiApi()
     }, [])
 
-    return <Video weather={weather} prefecture={prefecture} />
+    return (
+        <>
+            <Video weather={weather} prefecture={prefecture} />
+        </>
+    )
 }
