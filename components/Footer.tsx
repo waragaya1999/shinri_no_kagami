@@ -48,6 +48,7 @@ export default function Footer({ weather, prefecture }: Props) {
                     >
                         <img src={"/images/record.svg"} className={"h-[70%]"} />
                     </Link>
+
                     {userCollection ? (
                         <>
                             <button
@@ -56,13 +57,18 @@ export default function Footer({ weather, prefecture }: Props) {
                             >
                                 Sign outボタン
                             </button>
-                            <button className={"h-[70%]"}>
-                                <img
-                                    src={userCollection.image}
-                                    alt={userCollection.name}
-                                    className={"h-full rounded-full"}
-                                />
-                            </button>
+                            <Link
+                                href={"/myPage"}
+                                className={"flex items-center h-full"}
+                            >
+                                <button className={"h-[70%]"}>
+                                    <img
+                                        src={userCollection.image}
+                                        alt={userCollection.name}
+                                        className={"h-full rounded-full"}
+                                    />
+                                </button>
+                            </Link>
                         </>
                     ) : (
                         <>
