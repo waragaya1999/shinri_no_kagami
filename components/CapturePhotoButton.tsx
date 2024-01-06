@@ -32,7 +32,6 @@ export default function CapturePhotoButton({
 
     const handleOnClick = () => {
         startCountdown()
-        // clearCanvas()
     }
 
     useEffect(() => {
@@ -95,7 +94,7 @@ export default function CapturePhotoButton({
                 expressions: capturedExpressions[0].expressions,
                 capturedPhoto: capturedPhoto,
             }
-
+            clearCanvas()
             setCapturedPhotoModalData(setData)
         } else {
             console.log("capturedPhoto: ", capturePhoto)

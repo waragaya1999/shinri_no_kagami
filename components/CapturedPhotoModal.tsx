@@ -23,7 +23,7 @@ export default function CapturedPhotoModal({
                 <div className=" text-right">
                     <button
                         onClick={() => handleOnClick()}
-                        className=" bg-white text-center text-3xl font-bold"
+                        className=" bg-white text-center text-3xl font-bold z-[9999999]"
                     >
                         ✖︎
                     </button>

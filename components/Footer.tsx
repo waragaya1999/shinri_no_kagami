@@ -6,6 +6,7 @@ import { WeatherInfoDto } from "@/types/WeatherInfoDto"
 import Link from "next/link"
 import { useModal } from "@/hooks/useModal"
 import CapturedPhotoModal from "./CapturedPhotoModal"
+import { useVideo } from "@/hooks/useVideo"
 
 type Props = {
     weather: WeatherInfoDto | undefined
@@ -18,6 +19,7 @@ export default function Footer({ weather, prefecture }: Props) {
     useEffect(() => {
         handleUserCollection()
     }, [session])
+    const { clearCanvas } = useVideo()
 
     return (
         <>

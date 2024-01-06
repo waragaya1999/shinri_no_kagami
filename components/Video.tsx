@@ -1,5 +1,5 @@
 import { useVideo } from "@/hooks/useVideo"
-import { useEffect, useState } from "react"
+import { useEffect, useImperativeHandle, useState } from "react"
 import { WeatherInfoDto } from "@/types/WeatherInfoDto"
 import ExpressionsGraph from "@/components/ExpressionsGraph"
 import OtenkiInfo from "@/components/OtenkiInfo"
