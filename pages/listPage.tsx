@@ -12,7 +12,6 @@ export default function ListPage() {
     const { capturedPhotoModalData, setCapturedPhotoModalData } = useModal()
     const [list, setList] = useState<ListDto[]>()
     const [loading, setLoading] = useState(true)
-
     const session = useSession()
 
     useEffect(() => {
