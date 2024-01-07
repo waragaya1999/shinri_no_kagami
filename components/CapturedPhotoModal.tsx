@@ -5,7 +5,7 @@ type Props = {
 
 import { ListDto } from "@/types/ListDto"
 import ExpressionsGraph from "./ExpressionsGraph"
-import OtenkiInfo from "./OtenkiInfo"
+import OtenkiInfo2 from "./OtenkiInfo2"
 
 export default function CapturedPhotoModal({
     listData,
@@ -18,7 +18,7 @@ export default function CapturedPhotoModal({
     }
 
     return (
-        <div className="fixed inset-0 bg-white flex justify-center mt-16 z-10">
+        <div className="fixed inset-0 bg-white flex justify-center mt-16 z-10 px-12">
             <div className="relative  rounded-lg bg-white ">
                 <div className=" text-right">
                     <button
@@ -48,7 +48,7 @@ export default function CapturedPhotoModal({
                     ></div> */}
 
                     <ExpressionsGraph expressions={listData.expressions} />
-                    <OtenkiInfo
+                    <OtenkiInfo2
                         weather={listData.weather}
                         prefecture={listData.weather.location}
                     />

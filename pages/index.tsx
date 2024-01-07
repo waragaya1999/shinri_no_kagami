@@ -8,6 +8,7 @@ export default function Home() {
 
     useEffect(() => {
         getOtenkiApi()
+        console.log("useEffect index run")
     }, [])
 
     return (

@@ -1,4 +1,3 @@
-import { useFirestore } from "@/hooks/useFirestore"
 import { signOut, useSession } from "next-auth/react"
 
 export default function MyPage() {

@@ -8,7 +8,7 @@ const Layout: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
 
     useEffect(() => {
         getOtenkiApi()
-    })
+    }, [])
     return (
         <>
             <Header />

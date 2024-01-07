@@ -51,12 +51,6 @@ export default function Footer({ weather, prefecture }: Props) {
 
                     {userCollection ? (
                         <>
-                            <button
-                                className={"bg-white"}
-                                onClick={() => signOut()}
-                            >
-                                Sign outボタン
-                            </button>
                             <Link
                                 href={"/myPage"}
                                 className={"flex items-center h-full"}
