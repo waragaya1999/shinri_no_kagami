@@ -16,16 +16,16 @@ export default function MyPage() {
                         <p>{session.data.user.email}</p>
                         <button
                             onClick={() => signOut()}
-                            className=" m-auto h-20 w-56 rounded-3xl text-5xl bg-red-600 text-white text-nowrap mt-20"
+                            className=" m-auto h-12 w-40 rounded-3xl text-2xl bg-gray-400 text-white text-nowrap mt-20"
                         >
                             ログアウト
                         </button>
                     </div>
                 </div>
             ) : (
-                <div className=" w-screen h-screen bg-red-700">
-                    <h1 className="text-white text-9xl">
-                        ログインしてから出直せ
+                <div className=" w-screen h-screen">
+                    <h1 className=" text-2xl mt-40">
+                        ログインしなおしてください
                     </h1>
                 </div>
             )}

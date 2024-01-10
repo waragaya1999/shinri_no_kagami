@@ -71,7 +71,7 @@ export const useOtenkiApi = () => {
     const [weather, setWeather] = useState<WeatherInfoDto>({
         coord: { lon: 139.6917, lat: 35.6895 },
         weather: [
-            { id: 803, main: "Clouds", description: "曇りがち", icon: "50d" },
+            { id: 803, main: "Clouds", description: "曇りがち", icon: "04d" },
         ],
         base: "stations",
         main: {

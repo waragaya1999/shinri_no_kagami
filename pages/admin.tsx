@@ -9,7 +9,7 @@ export default function Admin() {
     const email = session.data?.user?.email
 
     const adminEmail = "meito.kuri@gmail.com"
-    const adminPassword = "unkoburiburi"
+    const adminPassword = "pass"
     const [password, setPassword] = useState("")
     const [error, setError] = useState(false)
 
