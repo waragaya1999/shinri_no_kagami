@@ -68,36 +68,7 @@ export const useOtenkiApi = () => {
     const [muniCd, setMuniCd] = useState("")
     const [prefecture, setPrefecture] = useState("Tokyo")
     const [latlon, setLatlon] = useState<LatLon>({ lat: 0, lon: 0 })
-    const [weather, setWeather] = useState<WeatherInfoDto>({
-        coord: { lon: 139.6917, lat: 35.6895 },
-        weather: [
-            { id: 803, main: "Clouds", description: "曇りがち", icon: "04d" },
-        ],
-        base: "stations",
-        main: {
-            temp: 282.56,
-            feels_like: 278.87,
-            temp_min: 281.84,
-            temp_max: 284.12,
-            pressure: 1009,
-            humidity: 48,
-        },
-        visibility: 10000,
-        wind: { speed: 8.75, deg: 10 },
-        clouds: { all: 75 },
-        dt: 1704589682,
-        sys: {
-            type: 2,
-            id: 268395,
-            country: "JP",
-            sunrise: 1704577885,
-            sunset: 1704613336,
-        },
-        timezone: 32400,
-        id: 1850144,
-        name: "東京都",
-        cod: 200,
-    })
+    const [weather, setWeather] = useState<WeatherInfoDto>()
 
     const successCallback = async (position: GeolocationPosition) => {
         console.log("successCallback")
@@ -171,24 +142,24 @@ export const useOtenkiApi = () => {
 
     const getOtenkiApi = () => {
         console.log("getOtenki")
-        getLocation()
+        // getLocation()
 
-        // if (weather === undefined) {
-        //     const localDataString = localStorage.getItem("weatherData")
-        //     const localPrefecture = localStorage.getItem("prefecture")
+        if (weather === undefined) {
+            const localDataString = localStorage.getItem("weatherData")
+            const localPrefecture = localStorage.getItem("prefecture")
 
-        //     console.log(localDataString, localPrefecture)
+            console.log(localDataString, localPrefecture)
 
-        //     if (localDataString && localPrefecture) {
-        //         const localWeather = JSON.parse(
-        //             localDataString,
-        //         ) as WeatherInfoDto
-        //         setWeather(localWeather)
-        //         setPrefecture(localPrefecture)
-        //     } else {
-        //         getLocation()
-        //     }
-        // }
+            if (localDataString && localPrefecture) {
+                const localWeather = JSON.parse(
+                    localDataString,
+                ) as WeatherInfoDto
+                setWeather(localWeather)
+                setPrefecture(localPrefecture)
+            } else {
+                getLocation()
+            }
+        }
     }
 
     return {
