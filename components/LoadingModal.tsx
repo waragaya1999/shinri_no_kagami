@@ -1,6 +1,4 @@
-import { WeatherInfoDto } from "@/types/WeatherInfoDto"
 import { useState } from "react"
-import * as timers from "timers"
 
 export default function LoadingModal() {
     const [timer, setTimer] = useState(0)

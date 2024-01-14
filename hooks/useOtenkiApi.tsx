@@ -66,11 +66,13 @@ const MUNI_LIST: MuniList = {
 
 export const useOtenkiApi = () => {
     const [muniCd, setMuniCd] = useState("")
-    const [prefecture, setPrefecture] = useState("")
+    const [prefecture, setPrefecture] = useState("Tokyo")
     const [latlon, setLatlon] = useState<LatLon>({ lat: 0, lon: 0 })
     const [weather, setWeather] = useState<WeatherInfoDto>()
 
     const successCallback = async (position: GeolocationPosition) => {
+        console.log("successCallback")
+
         setLatlon({
             lat: position.coords.latitude,
             lon: position.coords.longitude,
@@ -83,6 +85,7 @@ export const useOtenkiApi = () => {
             }
         }
         try {
+            console.log("try")
             const response = await fetch(
                 `https://mreversegeocoder.gsi.go.jp/reverse-geocoder/LonLatToAddress?lat=${position.coords.latitude}&lon=${position.coords.longitude}`,
             )
@@ -102,6 +105,7 @@ export const useOtenkiApi = () => {
                 if (MUNI_LIST.MUNI_ARRAY[prefectureCode]) {
                     const pf = MUNI_LIST.MUNI_ARRAY[prefectureCode]
                     setPrefecture(pf)
+                    console.log("otenki honbann run")
                     try {
                         const response = await fetch(
                             `https://api.openweathermap.org/data/2.5/weather?q=${pf}&appid=8b088bfd51d569c1bcd2db2dea01a24d&lang=ja`,
@@ -113,6 +117,8 @@ export const useOtenkiApi = () => {
                             JSON.stringify(data),
                         )
                         localStorage.setItem("prefecture", pf)
+                        console.log("success!!!!!!!!!!")
+                        console.log(data)
                     } catch {
                         console.log("error")
                     }
@@ -129,13 +135,21 @@ export const useOtenkiApi = () => {
     }
 
     const getLocation = () => {
+        console.log("getLocation")
+
         navigator.geolocation.getCurrentPosition(successCallback, errorCallback)
     }
 
     const getOtenkiApi = () => {
-        if (!weather) {
+        console.log("getOtenki")
+        // getLocation()
+
+        if (weather === undefined) {
             const localDataString = localStorage.getItem("weatherData")
             const localPrefecture = localStorage.getItem("prefecture")
+
+            console.log(localDataString, localPrefecture)
+
             if (localDataString && localPrefecture) {
                 const localWeather = JSON.parse(
                     localDataString,

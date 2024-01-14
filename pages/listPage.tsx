@@ -1,26 +1,20 @@
-import Header from "@/components/Header"
-import Footer from "@/components/Footer"
 import List from "@/components/List"
 import { useFirestore } from "@/hooks/useFirestore"
-import { useRouter } from "next/router"
-import { useOtenkiApi } from "@/hooks/useOtenkiApi"
 import { useEffect, useState } from "react"
 import { ListDto } from "@/types/ListDto"
 import { useSession } from "next-auth/react"
 import { useModal } from "@/hooks/useModal"
 import CapturedPhotoModal from "@/components/CapturedPhotoModal"
+import List__week from "@/components/List__week"
 
 export default function ListPage() {
     const { getList } = useFirestore()
-    const { getOtenkiApi, weather, prefecture } = useOtenkiApi()
     const { capturedPhotoModalData, setCapturedPhotoModalData } = useModal()
-    const [list, setList] = useState<ListDto[]>([])
+    const [list, setList] = useState<ListDto[]>()
     const [loading, setLoading] = useState(true)
-
     const session = useSession()
 
     useEffect(() => {
-        getOtenkiApi()
         const fetchData = async () => {
             try {
                 const fetchedList = await getList(
@@ -46,17 +40,19 @@ export default function ListPage() {
                         setCapturedPhotoModalData={setCapturedPhotoModalData}
                     />
                 )}
-                {!loading &&
-                    list &&
-                    list.map((item, key) => (
-                        <List
-                            key={key}
-                            data={item}
+
+                {!loading ? (
+                    list && (
+                        <List__week
+                            list={list}
                             setCapturedPhotoModalData={
                                 setCapturedPhotoModalData
                             }
                         />
-                    ))}
+                    )
+                ) : (
+                    <p>ロード中...</p>
+                )}
             </div>
         </>
     )

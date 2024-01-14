@@ -8,7 +8,12 @@ export default function Home() {
 
     useEffect(() => {
         getOtenkiApi()
+        console.log("useEffect index run")
     }, [])
 
-    return <Video weather={weather} prefecture={prefecture} />
+    return (
+        <>
+            <Video weather={weather} prefecture={prefecture} />
+        </>
+    )
 }

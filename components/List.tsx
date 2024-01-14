@@ -75,7 +75,7 @@ export default function List({ data, setCapturedPhotoModalData }: Props) {
                 </div>
                 <div
                     onClick={() => handleCapturedPhotoOnClick()}
-                    className={"w-[28%] h-28 rounded-xl"}
+                    className={"w-[28%] h-28 rounded-xl  scale-x-[-1]"}
                     style={{
                         backgroundImage: `url(${data.capturedPhoto})`,
                         backgroundSize: "cover",

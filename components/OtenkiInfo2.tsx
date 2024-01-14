@@ -33,8 +33,7 @@ export default function OtenkiInfo({ weather, prefecture }: Props) {
                 <div className={"flex items-center"}>
                     {WeatherIcon("thermometer")}
                     <p className={"mr-1"}>
-                        {weather.temperature &&
-                            `${(weather.temperature - 273.15).toFixed(1)}℃`}
+                        {weather.temperature && `${weather.temperature}℃`}
                     </p>
                     {WeatherIcon("humidity")}
                     <p>{weather.humidity}%</p>

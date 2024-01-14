@@ -9,6 +9,11 @@ type EmotionThresholds = {
     angry: number
 }
 
+let globalVideoRef = null
+let globalStreamRef: MediaStream | null = null
+let globalCanvas: { parentNode: { removeChild: (arg0: any) => void } } | null =
+    null
+
 export const useVideo = () => {
     const [expressions, setExpressions] = useState<ExpressionsDto>({
         neutral: 0,
@@ -22,6 +27,9 @@ export const useVideo = () => {
     const videoRef = useRef<HTMLVideoElement | null>(null)
     const streamRef = useRef<MediaStream | null>(null)
     const [isVideoActive, setIsVideoActive] = useState(true)
+
+    globalVideoRef = videoRef.current
+    globalStreamRef = streamRef.current
 
     const handleExpressions = (expressions: ExpressionsDto) => {
         setExpressions({
@@ -101,6 +109,14 @@ export const useVideo = () => {
             streamRef.current = null
         }
 
+        if (globalCanvas && globalCanvas.parentNode) {
+            globalCanvas.parentNode.removeChild(globalCanvas)
+            globalCanvas = null
+        }
+        if (globalStreamRef) {
+            globalStreamRef.getTracks().forEach((track) => track.stop())
+            globalStreamRef = null
+        }
         setIsVideoActive(false)
     }
 

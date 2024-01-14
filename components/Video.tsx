@@ -1,5 +1,5 @@
 import { useVideo } from "@/hooks/useVideo"
-import { useEffect, useState } from "react"
+import { useEffect, useImperativeHandle, useState } from "react"
 import { WeatherInfoDto } from "@/types/WeatherInfoDto"
 import ExpressionsGraph from "@/components/ExpressionsGraph"
 import OtenkiInfo from "@/components/OtenkiInfo"
@@ -45,11 +45,16 @@ export default function Video({ weather, prefecture }: Props) {
                         />
                     )}
                     {/* ここの書き方くどいけどレイアウトの関係上仕方がなかったんや... */}
-                    {!isLoading && (
+                    {!isLoading && weather !== undefined && (
                         <>
                             <ExpressionsGraph expressions={expressions} />
                             <OtenkiInfo
-                                weather={weather}
+                                weather={{
+                                    icon: weather.weather[0].icon,
+                                    temperature: weather.main.temp,
+                                    humidity: weather.main.humidity,
+                                    pressure: weather.main.pressure,
+                                }}
                                 prefecture={prefecture}
                             />
                         </>
@@ -61,8 +66,6 @@ export default function Video({ weather, prefecture }: Props) {
                     <p>ブラウザを更新してください</p>
                 </>
             )}
-
-            <button onClick={() => clearCanvas()}>videoの停止ボタン</button>
         </>
     )
 }
