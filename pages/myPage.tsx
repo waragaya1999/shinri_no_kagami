@@ -1,7 +1,10 @@
 import { signOut, useSession } from "next-auth/react"
+import Toast from "@/components/Toast"
+import { useEffect, useState } from "react"
 
 export default function MyPage() {
     const session = useSession()
+
     return (
         <>
             {session?.data?.user?.image ? (
